@@ -34,19 +34,27 @@ const LandingPage: React.FC = () => {
               variants={containerVariants}
               className="mt-6 text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-b from-white to-white/70"
             >
-              OnePage — Read 1 Page a Day. Rebuild Focus.
+              OnePage | Rebuild Focus.
             </motion.h1>
-            <motion.p
+            <motion.div
               initial="hidden"
               animate="show"
               variants={{
                 hidden: { opacity: 0, y: 12 },
                 show: { opacity: 1, y: 0, transition: { delay: 0.1, duration: 0.6 } },
               }}
-              className="mx-auto mt-5 max-w-2xl text-base sm:text-lg text-white/80"
+              className="mx-auto mt-5 max-w-2xl text-center text-white/80"
             >
-              Lost focus to endless scrolling? You’re not alone. OnePage helps you regain your attention and calm — through one meaningful page a day.
-            </motion.p>
+              <h3 className="text-2xl sm:text-3xl font-semibold text-white mb-4">
+                👋 Lost focus to endless scrolling? You’re not alone.
+              </h3>
+              <p className="text-base sm:text-lg leading-relaxed">
+                Most of us spend hours swiping through short videos, only to forget what we just saw.
+                <br />
+                Our attention spans are shrinking, and it’s getting harder to sit still and think.
+              </p>
+            </motion.div>
+
             <motion.div
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
