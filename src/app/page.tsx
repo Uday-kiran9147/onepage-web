@@ -74,7 +74,6 @@ const LandingPage: React.FC = () => {
               { title: "Daily Knowledge", desc: "A single page of timely, curated insights—designed to be delightful.", icon: Sparkles, accent: "from-amber-300 to-rose-400" },
               { title: "Stay Consistent", desc: "Streaks, reminders, and progress nudge you to keep going.", icon: CheckCircle2, accent: "from-emerald-300 to-cyan-400" },
               { title: "Focus-First", desc: "Typography and layout built to minimize distractions.", icon: Shield, accent: "from-indigo-300 to-violet-400" },
-              { title: "Made for India", desc: "Content tailored for Indian readers and contexts.", icon: Users, accent: "from-sky-300 to-fuchsia-400" },
               { title: "Offline Ready", desc: "Read anywhere, even on patchy networks.", icon: Star, accent: "from-yellow-300 to-orange-400" },
               { title: "Private by Design", desc: "Your reading data never leaves your device.", icon: Shield, accent: "from-teal-300 to-lime-400" },
             ].map((f, i) => (
