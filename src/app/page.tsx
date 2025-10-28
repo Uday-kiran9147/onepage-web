@@ -2,6 +2,8 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, CheckCircle2, Sparkles, Star, Quote, Mail, Shield } from "lucide-react";
+import Image from "next/image";
+import { DownloadButtons } from "./components/DownloadButtons";
 
 const Section: React.FC<{ id?: string; children: React.ReactNode; className?: string }> = ({ id, children, className }) => (
   <section id={id} className={`px-6 sm:px-8 lg:px-12 ${className || ""}`}>
@@ -17,13 +19,34 @@ const containerVariants = {
 const LandingPage: React.FC = () => {
   return (
     <div className="min-h-screen w-full text-foreground bg-[radial-gradient(1200px_800px_at_50%_-10%,#7dd3fc_0%,transparent_50%),radial-gradient(1000px_600px_at_80%_20%,#fca5a5_0%,transparent_50%),linear-gradient(to_bottom_right,#0f172a_0%,#111827_35%,#0b1220_100%)]">
+
+      {/* Navbar */}
+      <nav className="fixed top-0 left-0 w-full flex justify-between items-center px-6 sm:px-12 py-4 bg-black/30 backdrop-blur-md z-50">
+        {/* Logo + Text */}
+        <div className="flex items-center gap-2">
+          <Image
+            src="/icon.png" // 👈 put your logo image inside the /public folder
+            alt="OnePage logo"
+            width={32}
+            height={32}
+            className="rounded-md"
+          />
+          <h2 className="text-white text-xl sm:text-2xl font-bold tracking-tight">
+            OnePage
+          </h2>
+        </div>
+
+        {/* Download Buttons */}
+        <DownloadButtons />
+      </nav>
+
       {/* Hero */}
       <div className="relative overflow-hidden">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(800px_400px_at_10%_-10%,rgba(255,255,255,0.08),transparent),radial-gradient(600px_300px_at_90%_10%,rgba(255,255,255,0.06),transparent)]" />
         <Section className="pt-28 sm:pt-32 pb-20 sm:pb-28">
           <div className="mx-auto max-w-6xl text-center">
             <motion.div initial="hidden" animate="show" variants={containerVariants}>
-              <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs sm:text-sm text-white/80 backdrop-blur">
+              <div className="inline-flex items-center gap-2 border border-white/10 bg-white/5 px-3 py-1 text-xs sm:text-sm text-white/80 backdrop-blur">
                 <Sparkles className="size-3.5 sm:size-4 text-yellow-300" />
                 Rebuild your focus — one page a day
               </div>
@@ -32,9 +55,10 @@ const LandingPage: React.FC = () => {
               initial="hidden"
               animate="show"
               variants={containerVariants}
-              className="mt-6 text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-b from-white to-white/70"
+              className="mt-12 text-5xl sm:text-5xl md:text-6xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-b from-white to-white/70"
             >
-              OnePage | Rebuild Focus.
+              OnePage for Distracted generation
+              Rebuild focus
             </motion.h1>
             <motion.div
               initial="hidden"
@@ -45,15 +69,18 @@ const LandingPage: React.FC = () => {
               }}
               className="mx-auto mt-5 max-w-2xl text-center text-white/80"
             >
-              <h3 className="text-2xl sm:text-3xl font-semibold text-white mb-4">
+              {/* <h3 className="text-2xl sm:text-3xl font-semibold text-white mb-4">
                 👋 Lost focus to endless scrolling? You’re not alone.
-              </h3>
-              <p className="text-base sm:text-lg leading-relaxed">
+              </h3> */}
+              {/* <p className="text-base sm:text-lg leading-relaxed">
                 Most of us spend hours swiping through short videos, only to forget what we just saw.
                 <br />
                 Our attention spans are shrinking, and it’s getting harder to sit still and think.
-              </p>
+              </p> */}
             </motion.div>
+            <p className="mt-2 text-white/80">
+              Available on your favorite app stores. Start your focus journey today.
+            </p>
 
             <motion.div
               initial={{ opacity: 0, y: 12 }}
@@ -62,18 +89,18 @@ const LandingPage: React.FC = () => {
               className="mt-8 flex items-center justify-center gap-3"
             >
               <a
-                href="#signup"
-                className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-sky-400 to-indigo-500 px-6 py-3 text-base font-semibold text-slate-900 hover:opacity-95 active:opacity-90 shadow-[0_10px_30px_-10px_rgba(56,189,248,0.6)]"
+                href="https://play.google.com/store/apps/details?id=com.onepage.onepage"
+                className="inline-flex items-center gap-2 bg-gradient-to-r from-sky-400 to-indigo-500 px-6 py-3 text-base font-semibold text-slate-900 hover:opacity-95 active:opacity-90 shadow-[0_10px_30px_-10px_rgba(56,189,248,0.6)]"
               >
-                Get Early Access
+                Download Now
                 <ArrowRight className="size-4" />
               </a>
-              <a
+              {/* <a
                 href="#features"
                 className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-6 py-3 text-base font-semibold text-white/90 hover:bg-white/10"
               >
                 Learn more
-              </a>
+              </a> */}
             </motion.div>
           </div>
         </Section>
@@ -103,10 +130,10 @@ const LandingPage: React.FC = () => {
           <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {[
               { title: "1 Page a Day", desc: "Spend 2 minutes reading something that actually matters.", icon: Sparkles },
-              { title: "Personalized Topics", desc: "Get daily pages based on what you love — history, psychology, and more.", icon: CheckCircle2 },
+              // { title: "Personalized Topics", desc: "Get daily pages based on what you love — history, psychology, and more.", icon: CheckCircle2 },
               { title: "Focus Streaks", desc: "Build your reading habit with milestones that keep you motivated.", icon: Star },
               { title: "Distraction-Free", desc: "No ads. No scroll traps. Just pure reading flow.", icon: Shield },
-              { title: "Community Picks", desc: "Read what others loved most this week.", icon: CheckCircle2 },
+              // { title: "Community Picks", desc: "Read what others loved most this week.", icon: CheckCircle2 },
             ].map((f, i) => (
               <motion.div
                 key={i}
@@ -135,7 +162,7 @@ const LandingPage: React.FC = () => {
       <Section className="py-16 sm:py-24">
         <div className="mx-auto max-w-5xl text-center">
           <h2 className="text-3xl sm:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-white to-white/70">
-            Loved by readers
+            Loved by users
           </h2>
           <p className="mt-3 text-white/80">
             Real voices from our early community — readers who replaced doomscrolling with mindful reading.
@@ -169,46 +196,70 @@ const LandingPage: React.FC = () => {
           </div>
         </div>
       </Section>
+      {/* Download Section */}
+      <Section id="download" className="py-16 sm:py-24">
+        <div className="mx-auto max-w-3xl text-center">
+          {/* Big App Icon */}
+          <div className="flex justify-center mb-6">
+            <Image
+              src="/icon.png" // 👈 your main app icon in /public
+              alt="OnePage App Icon"
+              width={100}
+              height={100}
+              className="rounded-2xl shadow-lg "
+            />
+          </div>
 
-      {/* Signup */}
-      <Section id="signup" className="py-16 sm:py-24">
-        <div className="mx-auto max-w-3xl">
-          <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-white/10 to-white/5 p-8 backdrop-blur">
-            <div className="absolute -top-20 -right-16 size-56 rounded-full bg-gradient-to-br from-sky-400/40 to-indigo-500/40 blur-3xl" />
-            <div className="relative">
-              <h3 className="text-2xl sm:text-3xl font-bold text-white">Get early access</h3>
-              <p className="mt-2 text-white/80">Be first in line. We’ll send a single invite—no spam, ever.</p>
-              <form className="mt-6 flex flex-col sm:flex-row gap-3" onSubmit={(e) => e.preventDefault()}>
-                <div className="relative flex-1">
-                  <Mail className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 size-4 text-white/50" />
-                  <input
-                    type="email"
-                    required
-                    placeholder="you@example.com"
-                    className="w-full rounded-xl border border-white/15 bg-white/10 pl-10 pr-4 py-3 text-white placeholder:text-white/50 outline-none focus:ring-2 focus:ring-sky-400/60"
-                  />
-                </div>
-                <button className="inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-sky-400 to-indigo-500 px-5 py-3 font-semibold text-slate-900 shadow-[0_10px_30px_-10px_rgba(56,189,248,0.6)]">
-                  Notify me
-                </button>
-              </form>
-              <p className="mt-3 text-xs text-white/60 inline-flex items-center gap-1">
-                <Shield className="size-3" /> We respect your privacy. Unsubscribe anytime.
-              </p>
-            </div>
+          <h3 className="text-2xl sm:text-3xl font-bold text-white">Get OnePage Now</h3>
+          <p className="mt-2 text-white/80">
+            Available on your favorite app stores. Start your focus journey today.
+          </p>
+
+          {/* Store Buttons */}
+          <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-6">
+            {/* Google Play Button */}
+            <a
+              href="https://play.google.com/store/apps/details?id=com.onepage.onepage"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-transform hover:scale-105"
+            >
+              <Image
+                src="/Google_Play_Store.png"
+                alt="Get it on Google Play"
+                width={200}
+                height={65}
+                className="rounded-md shadow-md"
+              />
+            </a>
+
+            {/* Indus Appstore Button */}
+            <a
+              href="https://www.indusappstore.com/apps/books-and-reference/onepage/com.onepage.onepage?page=details&id=com.onepage.onepage"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-transform hover:scale-105"
+            >
+              <Image
+                src="/Indus_Appstore.png"
+                alt="Download on Indus Appstore"
+                width={200}
+                height={65}
+                className="rounded-md shadow-md"
+              />
+            </a>
           </div>
         </div>
       </Section>
+
 
       {/* Footer */}
       <footer className="border-t border-white/10 py-8">
         <div className="mx-auto max-w-6xl px-6 sm:px-8 lg:px-12 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-white/70">
           <div>© {new Date().getFullYear()} OnePage. All rights reserved.</div>
           <div className="flex items-center gap-4">
-            <a className="hover:text-white" href="#features">Features</a>
-            <a className="hover:text-white" href="#signup">Early Access</a>
-            <a className="hover:text-white" href="https://x.com" target="_blank" rel="noreferrer">X</a>
-            <a className="hover:text-white" href="https://github.com" target="_blank" rel="noreferrer">GitHub</a>
+            <a className="hover:text-white" href="https://x.com/uday_krn" target="_blank" rel="noreferrer">X</a>
+            <a className="hover:text-white" href="https://github.com/uday-kiran9147" target="_blank" rel="noreferrer">GitHub</a>
           </div>
         </div>
       </footer>
