@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "OnePage — Read one page, improve every day",
-  description: "A modern, beautifully designed daily reading experience to build consistent habits.",
+  title: "OnePage",
+  description: "OnePage helps users rebuild focus, knowledge, and reading habits by giving them just one powerful page to read every day — not too long, not too short, just enough to grow their mind.",
 };
 
 export default function RootLayout({
