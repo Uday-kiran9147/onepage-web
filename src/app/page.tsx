@@ -3,7 +3,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, Sparkles, Star, Quote, Shield } from "lucide-react";
 import Image from "next/image";
-import {DownloadButtons} from "@/app/components/DownloadButtons";
+import { DownloadButtons } from "@/app/components/DownloadButtons";
 
 const Section: React.FC<{ id?: string; children: React.ReactNode; className?: string }> = ({
   id,
@@ -31,9 +31,21 @@ const LandingPage: React.FC = () => {
           <h2 className="text-white text-lg sm:text-xl font-bold tracking-tight">OnePage</h2>
         </div>
 
-        <div className="hidden sm:block">
-          <DownloadButtons />
-        </div>
+        {/* Google Play Button */}
+        <a
+          href="https://play.google.com/store/apps/details?id=com.onepage.onepage"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="transition-transform hover:scale-105"
+        >
+          <Image
+            src="/Google_Play_Store.png"
+            alt="Get it on Google Play"
+            width={140}
+            height={45}
+            className="rounded-md shadow-md"
+          />
+        </a>
       </nav>
 
       {/* Hero Section */}
@@ -88,6 +100,7 @@ const LandingPage: React.FC = () => {
             OnePage delivers just one powerful page every day — short, meaningful reads designed to make you
             smarter, calmer, and more focused.
           </p>
+          
         </div>
       </Section>
 
@@ -183,8 +196,8 @@ const LandingPage: React.FC = () => {
               className="rounded-2xl shadow-lg"
             />
           </div>
-
-          <h3 className="text-2xl sm:text-3xl font-bold text-white">Get OnePage Now</h3>
+ 
+          <h3 className="text-2xl sm:text-3xl font-bold text-white">Download Now</h3>
           <p className="mt-2 text-white/80 text-sm sm:text-base">
             Available on your favorite app stores. Start your focus journey today.
           </p>

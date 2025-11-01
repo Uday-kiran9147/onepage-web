@@ -34,22 +34,6 @@ export function DownloadButtons() {
           className="rounded-md shadow-md"
         />
       </a>
-
-      {/* ProductHunt Button */}
-      <a
-        href="https://www.producthunt.com/products/onepage-4?embed=true&utm_source=badge-featured&utm_medium=badge&utm_source=badge-onepage-4"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="transition-transform hover:scale-105"
-      >
-        <Image
-          src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1032480&theme=light&t=1761974106584"
-          alt="OnePage - Replace doomscrolling with daily mindful learning | Product Hunt"
-          width={200}
-          height={54}
-          className="rounded-md shadow-md"
-        />
-      </a>
     </div>
   );
 }
