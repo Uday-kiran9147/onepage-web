@@ -1,9 +1,12 @@
 "use client";
-import React from "react";
+import React, { JSX } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, Sparkles, Star, Quote, Shield } from "lucide-react";
+import { ArrowRight, Sparkles, Star, Quote, Shield, BookOpen, Clock, Menu, CheckCircle } from "lucide-react";
 import Image from "next/image";
 import { DownloadButtons } from "@/app/components/DownloadButtons";
+import { AppData } from "@/data/app_data";
+// NOTE: metadata cannot be exported from a client component.
+// Move metadata to a server component (e.g. export const metadata from app/layout.tsx or app/page.tsx without "use client").
 
 const Section: React.FC<{ id?: string; children: React.ReactNode; className?: string }> = ({
   id,
@@ -15,166 +18,198 @@ const Section: React.FC<{ id?: string; children: React.ReactNode; className?: st
   </section>
 );
 
-const containerVariants = {
-  hidden: { opacity: 0, y: 16 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.6 } },
-};
 
-const LandingPage: React.FC = () => {
+const features = [
+  {
+    key: "one-page",
+    title: "One Page a Day",
+    desc: "A single, focused page daily — bite-sized, high-value ideas to read and remember.",
+    Icon: Sparkles,
+    accent: "from-yellow-300 to-amber-400",
+  },
+  {
+    key: "two-minute",
+    title: "2-Minute Rituals",
+    desc: "Quick intentional reading designed to rebuild attention without friction.",
+    Icon: Clock,
+    accent: "from-cyan-300 to-sky-400",
+  },
+  {
+    key: "no-distractions",
+    title: "Distraction-Free",
+    desc: "Minimal UI, no feeds — just a calm page for deep attention.",
+    Icon: Shield,
+    accent: "from-violet-300 to-indigo-400",
+  },
+  {
+    key: "curated",
+    title: "Curated & Timeless",
+    desc: "Selections sourced from science, philosophy, and practical creativity.",
+    Icon: BookOpen,
+    accent: "from-rose-300 to-fuchsia-400",
+  },
+];
+
+export default function Page(): JSX.Element {
   return (
-    <div className="min-h-screen w-full text-foreground bg-[radial-gradient(1200px_800px_at_50%_-10%,#7dd3fc_0%,transparent_50%),radial-gradient(1000px_600px_at_80%_20%,#fca5a5_0%,transparent_50%),linear-gradient(to_bottom_right,#0f172a_0%,#111827_35%,#0b1220_100%)]">
+    <main className="min-h-screen w-full bg-gradient-to-b from-[#FFFDF8] to-[#FAF3E0] text-slate-900 antialiased">
+      {/* Premium navbar */}
+      <nav className="backdrop-blur-sm sticky top-0 z-30 w-full bg-white/30 border-b border-white/20">
+        <div className="max-w-6xl mx-auto px-6 sm:px-8 flex items-center justify-between h-16">
+          <div className="flex items-center gap-3">
+            <Image src="/icon.png" alt="OnePage logo" width={40} height={40} className="rounded-lg shadow-sm" />
+            <div>
+              <h1 className="text-slate-900 text-lg font-extrabold tracking-tight">OnePage</h1>
+              <p className="text-xs text-slate-600 -mt-1">Daily focus, beautifully delivered</p>
+            </div>
+          </div>
 
-      {/* Navbar */}
-      <nav className="fixed top-0 left-0 w-full flex justify-between items-center px-4 sm:px-10 py-3 sm:py-4 bg-black/30 backdrop-blur-md z-50">
-        <div className="flex items-center gap-2 sm:gap-3">
-          <Image src="/icon.png" alt="OnePage logo" width={32} height={32} className="rounded-md" />
-          <h2 className="text-white text-lg sm:text-xl font-bold tracking-tight">OnePage</h2>
+          <div className="flex items-center gap-6">
+            <a href="#features" className="hidden md:inline text-sm text-slate-700 hover:text-slate-900">Features</a>
+            <a href={AppData.play_store_link} className="text-sm text-slate-700 hover:text-slate-900">Download</a>
+          </div>
         </div>
-
-        {/* Google Play Button */}
-        <a
-          href="https://play.google.com/store/apps/details?id=com.onepage.onepage"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="transition-transform hover:scale-105"
-        >
-          <Image
-            src="/Google_Play_Store.png"
-            alt="Get it on Google Play"
-            width={140}
-            height={45}
-            className="rounded-md shadow-md"
-          />
-        </a>
       </nav>
 
-      {/* Hero Section */}
-      <div className="relative overflow-hidden pt-24 sm:pt-32 pb-20 sm:pb-28">
+      {/* Hero */}
+      <header className="relative pt-24 pb-12">
         <Section>
-          <div className="mx-auto max-w-5xl text-center">
-            <motion.div initial="hidden" animate="show" variants={containerVariants}>
-              <div className="inline-flex items-center gap-2 border border-white/10 bg-white/5 px-3 py-1 text-xs sm:text-sm text-white/80 backdrop-blur rounded-full">
-                <Sparkles className="size-3.5 sm:size-4 text-yellow-300" />
-                Rebuild your focus — one page a day
-              </div>
-            </motion.div>
-
-            <motion.h1
-              initial="hidden"
-              animate="show"
-              variants={containerVariants}
-              className="mt-8 text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-b from-white to-white/70"
-            >
-              OnePage for the Distracted Generation
-            </motion.h1>
-
-            <p className="mx-auto mt-5 max-w-xl text-white/80 text-base sm:text-lg leading-relaxed">
-              Available on your favorite app stores. Start your focus journey today.
+          <motion.div initial="hidden" animate="show" className="max-w-4xl mx-auto text-center">
+            <h2 className="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight tracking-tight">
+              {AppData.h1}
+            </h2>
+            <p className="mt-4 text-lg sm:text-xl text-slate-700 max-w-2xl mx-auto">
+              {AppData.abstract}
             </p>
 
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2, duration: 0.6 }}
-              className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3"
-            >
+            <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
               <a
-                href="https://play.google.com/store/apps/details?id=com.onepage.onepage"
-                className="inline-flex items-center gap-2 bg-gradient-to-r from-sky-400 to-indigo-500 px-6 py-3 text-base font-semibold text-slate-900 rounded-xl hover:opacity-95 shadow-[0_10px_30px_-10px_rgba(56,189,248,0.6)]"
+                href="#features"
+                className="inline-flex items-center gap-2 bg-slate-900 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:opacity-95"
+                aria-label="Explore Features"
               >
-                Download Now
-                <ArrowRight className="size-4" />
+                Explore Features
+                <ArrowRight className="w-4 h-4" />
               </a>
-            </motion.div>
-          </div>
-        </Section>
-      </div>
 
-      {/* What is OnePage */}
-      <Section id="about" className="py-16 sm:py-24">
-        <div className="mx-auto max-w-3xl text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-white to-white/70">
-            What is OnePage?
-          </h2>
-          <p className="mt-4 text-white/80 text-base sm:text-lg leading-relaxed">
-            OnePage delivers just one powerful page every day — short, meaningful reads designed to make you
-            smarter, calmer, and more focused.
-          </p>
-          
+              <a
+                href={AppData.play_store_link}
+                className="inline-flex items-center gap-2 border border-slate-900 bg-white text-slate-900 px-6 py-3 rounded-xl font-semibold shadow-sm"
+                aria-label="Download App"
+              >
+                Download App
+                <ArrowRight className="w-4 h-4" />
+              </a>
+            </div>
+            <div className="mt-10 flex items-center justify-center gap-4 text-sm text-slate-600">
+              <div className="inline-flex items-center gap-2 bg-white/60 rounded-full px-3 py-1 shadow-sm">
+                <Sparkles className="w-4 h-4 text-amber-500" /> Curated daily
+              </div>
+              <div className="inline-flex items-center gap-2 bg-white/60 rounded-full px-3 py-1 shadow-sm">
+                <Clock className="w-4 h-4 text-cyan-500" /> 2 minutes
+              </div>
+            </div>
+          </motion.div>
+        </Section>
+      </header>
+
+      {/* Features */}
+      <Section id="features" className="py-16 sm:py-24">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <h3 className="text-3xl sm:text-4xl font-bold">{AppData.h2}</h3>
+            <p className="mt-2 text-slate-600 max-w-2xl mx-auto">Gentle, repeatable practices to build a lasting reading habit — no feeds, no distractions.</p>
+          </div>
+
+          <motion.div initial="hidden" animate="show" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {features.map((f) => (
+              <article
+                key={f.key}
+                className="rounded-3xl p-6 shadow-lg bg-white/80 hover:shadow-2xl transition-shadow transform hover:-translate-y-1"
+                aria-labelledby={`${f.key}-title`}
+              >
+                <div className="flex items-start gap-4">
+                  <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${f.accent} flex items-center justify-center shadow-inner`}>
+                    <f.Icon className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <h4 id={`${f.key}-title`} className="text-lg font-semibold text-slate-900">{f.title}</h4>
+                    <p className="mt-1 text-slate-600 text-sm">{f.desc}</p>
+                  </div>
+                </div>
+
+                <div className="mt-6 flex items-center justify-between">
+                  <span className="text-sm text-slate-700 font-medium">Learn more</span>
+                  <ArrowRight className="w-4 h-4 text-slate-700" />
+                </div>
+              </article>
+            ))}
+          </motion.div>
         </div>
       </Section>
 
-      {/* Why You’ll Love It */}
-      <Section id="features" className="py-16 sm:py-24">
-        <div className="mx-auto max-w-6xl text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-white to-white/70">
-            Why You’ll Love It
-          </h2>
-          <p className="mt-3 text-white/80">Simple. Calming. Consistent.</p>
+      {/* Callouts */}
+      <Section className="py-12">
+        <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+          <div>
+            <h3 className="text-4xl font-bold text-center mb-12">{AppData.h3}</h3>
+            <p className="mt-3 text-slate-700">
+              OnePage is engineered around the psychology of attention — short, high-signal reads that fit anywhere in your day.
+            </p>
+            <ul className="mt-6 space-y-6">
 
-          <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-            {[
-              { title: "1 Page a Day", desc: "Spend 2 minutes reading something that actually matters.", icon: Sparkles },
-              { title: "Focus Streaks", desc: "Build your reading habit with milestones that keep you motivated.", icon: Star },
-              { title: "Distraction-Free", desc: "No ads. No scroll traps. Just pure reading flow.", icon: Shield },
-            ].map((f, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.3 }}
-                transition={{ delay: i * 0.05, duration: 0.5 }}
-                className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur hover:bg-white/10 transition"
-              >
-                <div className="flex items-start gap-4">
-                  <div className="grid size-12 place-items-center rounded-xl bg-gradient-to-br from-white to-white text-slate-900 shadow-inner">
-                    <f.icon className="size-6 text-slate-700" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-white">{f.title}</h3>
-                    <p className="mt-1 text-sm text-white/80">{f.desc}</p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
+              {AppData.h3_list_items.map((item, idx) => (
+                <li key={idx} className="flex items-start gap-3">
+                  <span className="mt-1 text-emerald-500">
+                    <CheckCircle className="w-5 h-5" />
+                  </span>
+                  <span className="text-slate-700">{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="rounded-2xl p-6 bg-gradient-to-br from-white to-slate-50 shadow-lg">
+            <div className="text-sm text-slate-600">Preview</div>
+            <div className="mt-4 rounded-xl border border-slate-100 p-6 bg-white shadow-inner">
+              <h4 className="font-semibold text-slate-900">Today's page</h4>
+              <p className="mt-2 text-slate-600 text-sm">"Focus is the new luxury. Reduce input, amplify attention."</p>
+              <div className="mt-4 flex items-center gap-3">
+                <span className="text-xs text-slate-500">2 min read</span>
+                <span className="px-2 py-1 rounded bg-slate-100 text-xs text-slate-700">Curated</span>
+              </div>
+            </div>
           </div>
         </div>
       </Section>
 
       {/* Testimonials */}
       <Section className="py-16 sm:py-24">
-        <div className="mx-auto max-w-5xl text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-white to-white/70">
-            Loved by Users
-          </h2>
-          <p className="mt-3 text-white/80 text-sm sm:text-base">
-            Real voices from readers who replaced doomscrolling with mindful reading.
-          </p>
+        <div className="max-w-6xl mx-auto text-center">
+          <h3 className="text-2xl font-bold">Loved by readers</h3>
+          <p className="mt-2 text-slate-600">Short, memorable, and habit-forming — real people, real results.</p>
 
-          <div className="mt-10 flex flex-wrap justify-center gap-6">
+          <div className="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-6">
             {[
-              { name: "Aditi", text: "I used to open Instagram first thing in the morning. Now it’s OnePage.", rating: 5 },
-              { name: "Karan", text: "Feels like my attention span is healing. One page at a time.", rating: 5 },
-              { name: "Rohan", text: "Short, deep, and surprisingly memorable.", rating: 4 },
+              { name: "Aditi", text: "I replaced my morning doomscroll with OnePage. My focus feels restored.", rating: 5 },
+              { name: "Karan", text: "Two minutes is all it takes. My streak motivates me daily.", rating: 5 },
+              { name: "Rohan", text: "The selections are sharp and lasting. I actually remember what I read.", rating: 4 },
             ].map((t, i) => (
               <motion.figure
                 key={i}
-                initial={{ opacity: 0, y: 16 }}
+                initial={{ opacity: 0, y: 12 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: i * 0.1, duration: 0.6 }}
-                className="w-full sm:w-[280px] md:w-[300px] rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur text-left"
+                transition={{ delay: i * 0.06, duration: 0.45 }}
+                className="bg-white rounded-2xl p-6 shadow text-left"
               >
-                <Quote className="size-5 text-white/50" />
-                <blockquote className="mt-3 text-white/90 text-sm sm:text-base">{t.text}</blockquote>
-                <figcaption className="mt-4 flex items-center justify-between text-sm text-white/70">
-                  <span>{t.name}</span>
+                <Quote className="w-5 h-5 text-slate-400" />
+                <blockquote className="mt-3 text-slate-800">{t.text}</blockquote>
+                <figcaption className="mt-4 flex items-center justify-between text-sm text-slate-600">
+                  <span className="font-medium">{t.name}</span>
                   <span className="flex gap-1">
                     {Array.from({ length: 5 }).map((_, idx) => (
-                      <Star
-                        key={idx}
-                        className={`size-4 ${idx < t.rating ? "text-yellow-300" : "text-white/30"}`}
-                      />
+                      <Star key={idx} className={`w-4 h-4 ${idx < t.rating ? "text-yellow-400" : "text-slate-300"}`} />
                     ))}
                   </span>
                 </figcaption>
@@ -184,42 +219,52 @@ const LandingPage: React.FC = () => {
         </div>
       </Section>
 
-      {/* Download Section */}
+      {/* Download */}
       <Section id="download" className="py-16 sm:py-24">
-        <div className="mx-auto max-w-3xl text-center">
-          <div className="flex justify-center mb-6">
-            <Image
-              src="/icon.png"
-              alt="OnePage App Icon"
-              width={100}
-              height={100}
-              className="rounded-2xl shadow-lg"
-            />
-          </div>
- 
-          <h3 className="text-2xl sm:text-3xl font-bold text-white">Download Now</h3>
-          <p className="mt-2 text-white/80 text-sm sm:text-base">
-            Available on your favorite app stores. Start your focus journey today.
-          </p>
+        <div className="max-w-5xl mx-auto px-6">
+          <div className="flex flex-col lg:flex-row items-center justify-center gap-10 lg:gap-16 text-center lg:text-left">
+            {/* App Icon */}
+            <div className="flex-shrink-0">
+              <div className="relative flex justify-center">
+                <Image
+                  src="/icon.png"
+                  alt="OnePage App Icon"
+                  width={160}
+                  height={160}
+                  className="rounded-3xl shadow-lg shadow-sky-500/20"
+                />
+                <div className="absolute inset-0 rounded-3xl bg-gradient-to-tr from-sky-400/20 to-indigo-500/20 blur-xl -z-10" />
+              </div>
+            </div>
 
-          <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-6">
-            <DownloadButtons />
+            {/* Text + Buttons */}
+            <div>
+              <h3 className="text-3xl sm:text-4xl font-extrabold text-slate-900">
+                Start your first page
+              </h3>
+              <p className="mt-3 text-slate-600 text-base sm:text-lg max-w-md mx-auto lg:mx-0">
+                Available on Android — simple, intentional reading in one lightweight app.
+              </p>
+
+              <div className="mt-8 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+                <DownloadButtons />
+              </div>
+            </div>
           </div>
         </div>
       </Section>
 
+
       {/* Footer */}
-      <footer className="border-t border-white/10 py-8">
-        <div className="mx-auto max-w-6xl px-6 sm:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-white/70">
+      <footer className="border-t border-slate-200 bg-[#FFF8E7] py-8">
+        <div className="max-w-6xl mx-auto px-6 sm:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-slate-700">
           <div>© {new Date().getFullYear()} OnePage. All rights reserved.</div>
           <div className="flex items-center gap-4">
-            <a className="hover:text-white" href="https://x.com/uday_krn" target="_blank" rel="noreferrer">X</a>
-            <a className="hover:text-white" href="https://github.com/uday-kiran9147" target="_blank" rel="noreferrer">GitHub</a>
+            <a className="hover:underline" href="https://x.com/uday_krn" target="_blank" rel="noreferrer">X</a>
+            <a className="hover:underline" href="https://github.com/uday-kiran9147" target="_blank" rel="noreferrer">GitHub</a>
           </div>
         </div>
       </footer>
-    </div>
+    </main>
   );
-};
-
-export default LandingPage;
+}

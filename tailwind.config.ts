@@ -8,12 +8,12 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      colors: {
-        'brand-blue': '#EBF5FF', // A light, calming blue
-        'brand-dark': '#1F2937', // Dark text
-        'brand-light': '#F9FAFB', // Off-white background
-        'brand-green': '#10B981', // Success/check color
-      },
+      // colors: {
+      //   'brand-blue': '#EBF5FF', // A light, calming blue
+      //   'brand-dark': '#1F2937', // Dark text
+      //   'brand-light': '#F9FAFB', // Off-white background
+      //   'brand-green': '#10B981', // Success/check color
+      // },
       fontFamily: {
         // Assumes you're importing a font like Inter in your layout.tsx
         sans: ['Inter', 'sans-serif'],
