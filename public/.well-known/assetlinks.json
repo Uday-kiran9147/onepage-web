@@ -1,36 +1,13 @@
 [
   {
     "relation": [
-      "delegate_permission/common.handle_all_urls",
-      "delegate_permission/common.get_login_creds"
+      "delegate_permission/common.handle_all_urls"
     ],
     "target": {
       "namespace": "android_app",
       "package_name": "com.onepage.onepage",
       "sha256_cert_fingerprints": [
-        "65:16:78:90:D9:3D:8B:86:FB:8B:A7:35:EE:93:9F:E0:FF:E7:93:B2:FF:67:62:48:FC:00:A1:BA:5C:11:25:5A",
         "FA:22:57:50:B9:AE:79:06:6C:EE:42:8B:06:EF:FE:B3:C7:3E:21:0D:3A:74:E0:6F:D0:3A:06:0D:5F:D2:AF:E8"
-      ]
-    }
-  },
-  {
-    "relation": [
-      "delegate_permission/common.get_login_creds"
-    ],
-    "target": {
-      "namespace": "web",
-      "site": "https://readonepage.xyz"
-    }
-  },
-  {
-    "relation": [
-      "delegate_permission/common.get_login_creds"
-    ],
-    "target": {
-      "namespace": "android_app",
-      "package_name": "com.onepage.onepage",
-      "sha256_cert_fingerprints": [
-        "65:16:78:90:D9:3D:8B:86:FB:8B:A7:35:EE:93:9F:E0:FF:E7:93:B2:FF:67:62:48:FC:00:A1:BA:5C:11:25:5A"
       ]
     }
   }
