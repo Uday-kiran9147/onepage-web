@@ -4,7 +4,7 @@
             "delegate_permission/common.handle_all_urls"
         ],
         "target": {
-            "namespace": "onepage",
+            "namespace": "android_app",
             "package_name": "com.onepage",
             "sha256_cert_fingerprints": [
                 "FA:22:57:50:B9:AE:79:06:6C:EE:42:8B:06:EF:FE:B3:C7:3E:21:0D:3A:74:E0:6F:D0:3A:06:0D:5F:D2:AF:E8"
