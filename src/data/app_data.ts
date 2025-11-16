@@ -1,6 +1,6 @@
 class AppData {
-   static h1 = 'Doomscrolling kills focus OnePage can Fix it'
-   static abstract = 'onepage delivers a short, hign value read everyday-- helping you rebuild focus, learn deeply and enjoy reading again'
+   static h1 = 'Can’t finish the books you start? You’re not alone'
+   static abstract = '— most readers lose momentum after a few chapters, Stay focused and finally complete the books you start. 📖✨'
 
    static h2 = 'Most of us scroll more than we read'
    static h2_list_items = ['Endless feeds, shorts dopamine loops, and zero retention', 'knowledge gets replaced by noise', 'Focus fades away']
