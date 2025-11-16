@@ -4,6 +4,7 @@ import { db, collection, getDocs } from "@/lib/firebase_config";
 import EmailSearch from "./email-search";
 import { useEffect, useState } from "react";
 import { limit, orderBy, query } from "firebase/firestore";
+import { DownloadButtons } from "../components/DownloadButtons";
 
 export const dynamic = "force-dynamic";
 
@@ -181,6 +182,9 @@ export default function LeaderboardPage() {
           <p className="text-gray-700">
             Read one page daily. Stay consistent. Climb the OnePage leaderboard.
           </p>
+        </div>
+        <div className="mt-10 flex justify-center">
+          <DownloadButtons />
         </div>
       </div>
     </div>
