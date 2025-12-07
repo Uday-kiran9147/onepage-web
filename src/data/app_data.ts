@@ -1,5 +1,5 @@
 class AppData {
-   static h1 = 'Can’t finish the books you start? You’re not alone'
+   static h1 = 'Replace doomscrolling with Mindful reading'
    static abstract = '— most readers lose momentum after a few chapters, Stay focused and finally complete the books you start. 📖✨'
 
    static h2 = 'Most of us scroll more than we read'
