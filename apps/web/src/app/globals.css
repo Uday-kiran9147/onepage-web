@@ -1,0 +1,73 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  --foreground: #1a1a1a;
+  --background: #f9f8f5;
+  --card-bg: #ffffff;
+  --border: #e8e5de;
+  --beige: #f4f3ef;
+  
+  --purple-bg: #EEEDFE;
+  --purple-text: #3C3489;
+  --purple-border: #AFA9EC;
+
+  --teal-bg: #E1F5EE;
+  --teal-text: #0F6E56;
+  --teal-border: #80C8B0;
+
+  --amber-bg: #FAEEDA;
+  --amber-text: #854F0B;
+  --amber-border: #ECD0A9;
+
+  --red-bg: #FAECE7;
+  --red-text: #B23D19;
+  --red-border: #E05A2B;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom styles for Mirror design */
+.label-premium {
+  font-size: 11px;
+  font-weight: 700;
+  color: #999;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 0.75rem;
+}
+
+.card-premium {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.5rem;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.015);
+}
+
+.card-premium:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(83, 74, 183, 0.04);
+  border-color: var(--purple-border);
+}
+
+.highlight-premium {
+  background: var(--purple-bg);
+  border: 1px solid var(--purple-border);
+  border-radius: 16px;
+  padding: 1.5rem;
+}
+
+.font-serif-premium {
+  font-family: 'Instrument Serif', serif;
+}
