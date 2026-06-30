@@ -15,9 +15,9 @@ const MOCK_SECTIONS: MockSection[] = [
     type: 'links',
     data: {
       links: [
-        { label: 'GitHub', url: 'https://github.com' },
-        { label: 'Twitter / X', url: 'https://x.com' },
-        { label: 'LinkedIn', url: 'https://linkedin.com' },
+        { label: 'Facebook', url: 'https://facebook.com/zuck' },
+        { label: 'Instagram', url: 'https://instagram.com/zuck' },
+        { label: 'Threads', url: 'https://threads.net/@zuck' },
       ],
     },
   },
@@ -27,16 +27,16 @@ const MOCK_SECTIONS: MockSection[] = [
     data: {
       projects: [
         {
-          name: 'Antigravity AI',
-          description: 'Autonomous coding agent platform designed for fast and scalable software engineering.',
+          name: 'Meta Platforms',
+          description: 'Building the next evolution of social connection — from social media to the metaverse.',
           status: 'shipped',
-          tags: ['TypeScript', 'Next.js', 'Go'],
+          tags: ['AI', 'VR', 'Social'],
         },
         {
-          name: 'OnePage Manager',
-          description: 'A minimal dashboard to orchestrate links, portfolios, and online workspaces.',
-          status: 'building',
-          tags: ['React', 'Firebase', 'Tailwind'],
+          name: 'Meta AI & Llama',
+          description: 'Open-source large language models powering the next generation of AI applications.',
+          status: 'shipped',
+          tags: ['AI', 'Open Source', 'LLM'],
         },
       ],
     },
@@ -47,16 +47,16 @@ const MOCK_SECTIONS: MockSection[] = [
     data: {
       items: [
         {
-          role: 'Staff Systems Engineer',
-          company: 'Hyperlink Labs',
-          duration: '2024 - Present',
-          description: 'Designing distributed services and high-throughput developer tooling.',
+          role: 'CEO & Founder',
+          company: 'Meta Platforms',
+          duration: '2004 - Present',
+          description: 'Leading a global technology company connecting billions of people worldwide.',
         },
         {
-          role: 'Full Stack Developer',
-          company: 'Pixel Craft Studio',
-          duration: '2022 - 2024',
-          description: 'Built customer portals, fast static pages, and modular dashboard widgets.',
+          role: 'Co-Founder',
+          company: 'Facebook',
+          duration: '2004 - 2021',
+          description: 'Built the world\'s largest social network from a Harvard dorm room.',
         },
       ],
     },
@@ -65,7 +65,7 @@ const MOCK_SECTIONS: MockSection[] = [
     title: 'About Me',
     type: 'about',
     data: {
-      content: 'I am a software engineer focused on building clean, high-performance web products. I believe the internet should be simple, beautifully typeset, and blazingly fast.',
+      content: 'I\u2019m focused on building technology that brings people closer together. Our mission at Meta is to give people the power to build community and bring the world closer together.',
     },
   },
 ];
@@ -158,12 +158,12 @@ export default function LandingPage() {
             {/* Header info */}
             <div className="text-center">
               <div className="w-16 h-16 bg-[#F2F0FA] border border-[#D2CCE9] mx-auto flex items-center justify-center text-xl font-bold text-[#6B60A8] shadow-sm mb-3">
-                U
+                MZ
               </div>
-              <h3 className="font-extrabold text-base text-gray-900">Uday Kiran</h3>
-              <p className="text-[10px] text-[#6B60A8] font-bold">readonepage.xyz/uday</p>
+              <h3 className="font-extrabold text-base text-gray-900">Mark Zuckerberg</h3>
+              <p className="text-[10px] text-[#6B60A8] font-bold">readonepage.xyz/zuck</p>
               <p className="text-xs font-serif-premium italic text-[#554C8C] mt-2 max-w-[220px] mx-auto leading-relaxed">
-                &ldquo;Building developer tools and scalable systems.&rdquo;
+                &ldquo;Building technology that brings people closer together.&rdquo;
               </p>
             </div>
 
