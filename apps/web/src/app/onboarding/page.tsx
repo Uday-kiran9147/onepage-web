@@ -245,7 +245,7 @@ function OnboardingContent() {
             
             {/* Avatar URL / Preview */}
             <div className="flex flex-col sm:flex-row items-center gap-6 pb-2">
-              <div className="w-20 h-20 bg-gray-100 border border-[#e8e5de] flex items-center justify-center overflow-hidden shadow-inner">
+              <div className="w-20 h-20 bg-gray-100 border border-[#eae8e2] flex items-center justify-center overflow-hidden shadow-inner">
                 {avatarWatch ? (
                   <img src={avatarWatch} alt="Avatar Preview" className="w-full h-full object-cover" onError={(e) => {
                     (e.target as any).src = 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y';
@@ -262,7 +262,7 @@ function OnboardingContent() {
                   type="text"
                   placeholder="https://example.com/avatar.jpg"
                   {...register('avatarUrl')}
-                  className="w-full px-4 py-2.5 bg-[#f4f3ef] border border-[#e8e5de] text-gray-900 text-sm focus:outline-none"
+                  className="w-full px-4 py-2.5 bg-[#f1efea] border border-[#eae8e2] text-gray-900 text-sm focus:outline-none"
                 />
               </div>
             </div>
@@ -277,12 +277,12 @@ function OnboardingContent() {
                 <input
                   type="text"
                   {...register('username')}
-                  className={`w-full pl-[135px] pr-10 py-3.5 bg-[#f4f3ef] border ${
+                  className={`w-full pl-[135px] pr-10 py-3.5 bg-[#f1efea] border ${
                     errors.username || usernameStatus === 'taken' 
                       ? 'border-[#ECD5CC] focus:ring-[#ECD5CC]' 
                       : usernameStatus === 'available'
                       ? 'border-[#D5E0DA] focus:ring-[#557A68]'
-                      : 'border-[#e8e5de] focus:ring-[#D2CCE9]'
+                      : 'border-[#eae8e2] focus:ring-[#D2CCE9]'
                   } text-gray-900 text-sm font-bold focus:outline-none focus:ring-2 focus:border-transparent transition`}
                 />
                 <div className="absolute right-4 flex items-center justify-center">
@@ -308,7 +308,7 @@ function OnboardingContent() {
                 type="text"
                 {...register('name')}
                 placeholder="e.g. Uday Kiran"
-                className="w-full px-4 py-3 bg-[#f4f3ef] border border-[#e8e5de] text-gray-900 text-sm font-semibold focus:outline-none"
+                className="w-full px-4 py-3 bg-[#f1efea] border border-[#eae8e2] text-gray-900 text-sm font-semibold focus:outline-none"
               />
               {errors.name && (
                 <p className="mt-1.5 text-xs text-[#A66E58]">{errors.name.message}</p>
@@ -324,7 +324,7 @@ function OnboardingContent() {
                 {...register('bio')}
                 rows={2}
                 placeholder="e.g. Systems Engineer • Building developer tools and scalable systems."
-                className="w-full px-4 py-3 bg-[#f4f3ef] border border-[#e8e5de] text-gray-900 placeholder-gray-400 text-sm focus:outline-none resize-none font-medium"
+                className="w-full px-4 py-3 bg-[#f1efea] border border-[#eae8e2] text-gray-900 placeholder-gray-400 text-sm focus:outline-none resize-none font-medium"
               />
               {errors.bio && (
                 <p className="mt-1.5 text-xs text-[#A66E58]">{errors.bio.message}</p>
@@ -332,7 +332,7 @@ function OnboardingContent() {
             </div>
 
             {/* First Section Wizard */}
-            <div className="border-t border-[#e8e5de] pt-6">
+            <div className="border-t border-[#eae8e2] pt-6">
               <label className="block text-xs font-bold uppercase tracking-wider text-[#6B60A8] mb-3">
                 Create your first section
               </label>
@@ -344,7 +344,7 @@ function OnboardingContent() {
                   className={`flex-1 py-2 px-3 text-xs border text-center font-bold transition ${
                     firstSectionType === 'links'
                       ? 'bg-[#F2F0FA] border-[#D2CCE9] text-[#6B60A8]'
-                      : 'bg-white border-[#e8e5de] text-gray-600 hover:bg-gray-50'
+                      : 'bg-white border-[#eae8e2] text-gray-600 hover:bg-gray-50'
                   }`}
                 >
                   🔗 Social Links
@@ -355,7 +355,7 @@ function OnboardingContent() {
                   className={`flex-1 py-2 px-3 text-xs border text-center font-bold transition ${
                     firstSectionType === 'about'
                       ? 'bg-[#F2F0FA] border-[#D2CCE9] text-[#6B60A8]'
-                      : 'bg-white border-[#e8e5de] text-gray-600 hover:bg-gray-50'
+                      : 'bg-white border-[#eae8e2] text-gray-600 hover:bg-gray-50'
                   }`}
                 >
                   📝 About Text
@@ -366,7 +366,7 @@ function OnboardingContent() {
                   className={`flex-1 py-2 px-3 text-xs border text-center font-bold transition ${
                     firstSectionType === 'none'
                       ? 'bg-[#F2F0FA] border-[#D2CCE9] text-[#6B60A8]'
-                      : 'bg-white border-[#e8e5de] text-gray-600 hover:bg-gray-50'
+                      : 'bg-white border-[#eae8e2] text-gray-600 hover:bg-gray-50'
                   }`}
                 >
                   ⏭️ Skip
@@ -374,14 +374,14 @@ function OnboardingContent() {
               </div>
 
               {firstSectionType === 'links' && (
-                <div className="bg-[#f4f3ef] p-4 space-y-3">
+                <div className="bg-[#f1efea] p-4 space-y-3">
                   <span className="text-[10px] uppercase font-bold tracking-wider text-[#999] block">Quick Socials</span>
                   <div>
                     <input
                       type="text"
                       placeholder="GitHub URL (e.g., https://github.com/...)"
                       {...register('githubUrl')}
-                      className="w-full px-3.5 py-2 text-xs border border-[#e8e5de] focus:outline-none"
+                      className="w-full px-3.5 py-2 text-xs border border-[#eae8e2] focus:outline-none"
                     />
                   </div>
                   <div>
@@ -389,7 +389,7 @@ function OnboardingContent() {
                       type="text"
                       placeholder="Twitter URL (e.g., https://x.com/...)"
                       {...register('twitterUrl')}
-                      className="w-full px-3.5 py-2 text-xs border border-[#e8e5de] focus:outline-none"
+                      className="w-full px-3.5 py-2 text-xs border border-[#eae8e2] focus:outline-none"
                     />
                   </div>
                   <div>
@@ -397,20 +397,20 @@ function OnboardingContent() {
                       type="text"
                       placeholder="LinkedIn URL (e.g., https://linkedin.com/...)"
                       {...register('linkedinUrl')}
-                      className="w-full px-3.5 py-2 text-xs border border-[#e8e5de] focus:outline-none"
+                      className="w-full px-3.5 py-2 text-xs border border-[#eae8e2] focus:outline-none"
                     />
                   </div>
                 </div>
               )}
 
               {firstSectionType === 'about' && (
-                <div className="bg-[#f4f3ef] p-4">
+                <div className="bg-[#f1efea] p-4">
                   <span className="text-[10px] uppercase font-bold tracking-wider text-[#999] block mb-2">Detailed Writeup</span>
                   <textarea
                     rows={4}
                     placeholder="Write anything you want visitors to read... (e.g. what you are studying, your interests, current job description)"
                     {...register('aboutContent')}
-                    className="w-full px-3.5 py-2 text-xs border border-[#e8e5de] focus:outline-none resize-none"
+                    className="w-full px-3.5 py-2 text-xs border border-[#eae8e2] focus:outline-none resize-none"
                   />
                 </div>
               )}

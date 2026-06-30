@@ -122,7 +122,7 @@ export default async function ProfilePage({
         {/* Profile Header */}
         <div className="flex flex-col items-center text-center mb-12">
           {/* Avatar image or fallback letter */}
-          <div className="w-24 h-24 border border-[#e8e5de] bg-[#F2F0FA] flex items-center justify-center overflow-hidden shadow-md mb-4">
+          <div className="w-24 h-24 border border-[#eae8e2] bg-[#F2F0FA] flex items-center justify-center overflow-hidden shadow-md mb-4">
             {profile.avatarUrl ? (
               <img src={profile.avatarUrl} alt={profile.name} className="w-full h-full object-cover" />
             ) : (
@@ -148,7 +148,7 @@ export default async function ProfilePage({
             profile.sections.map((section) => (
               <section key={section.id} className="animate-fade-in">
                 {/* Section Header */}
-                <h3 className="label-premium border-b border-[#e8e5de] pb-1.5 mb-4">
+                <h3 className="label-premium border-b border-[#eae8e2] pb-1.5 mb-4">
                   {section.title}
                 </h3>
 
@@ -161,7 +161,7 @@ export default async function ProfilePage({
                         href={link.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex justify-between items-center px-5 py-4 bg-white border border-[#e8e5de] hover:border-[#D2CCE9] text-gray-800 hover:text-[#6B60A8] hover:-translate-y-0.5 transition duration-200 shadow-sm"
+                        className="flex justify-between items-center px-5 py-4 bg-white border border-[#eae8e2] hover:border-[#D2CCE9] text-gray-800 hover:text-[#6B60A8] hover:-translate-y-0.5 transition duration-200 shadow-sm"
                       >
                         <span className="text-sm font-bold flex items-center gap-2">
                           <span>🔗</span>
@@ -222,7 +222,7 @@ export default async function ProfilePage({
                             {proj.tags.map((tag, tagIdx) => (
                               <span
                                 key={tagIdx}
-                                className="text-[9px] font-bold px-2 py-0.5 bg-[#f4f3ef] border border-[#e8e5de] text-gray-500"
+                                className="text-[9px] font-bold px-2 py-0.5 bg-[#f1efea] border border-[#eae8e2] text-gray-500"
                               >
                                 {tag}
                               </span>
@@ -236,7 +236,7 @@ export default async function ProfilePage({
 
                 {/* --- EXPERIENCE SECTION --- */}
                 {section.type === 'experience' && section.data.items && (
-                  <div className="relative border-l-2 border-[#e8e5de] ml-3 pl-6 space-y-6 py-1">
+                  <div className="relative border-l-2 border-[#eae8e2] ml-3 pl-6 space-y-6 py-1">
                     {section.data.items.map((item, i) => (
                       <div key={i} className="relative">
                         {/* Timeline point */}
@@ -246,7 +246,7 @@ export default async function ProfilePage({
                           <h4 className="font-extrabold text-sm text-gray-900">
                             {item.role} <span className="font-normal text-gray-400">at</span> {item.company}
                           </h4>
-                          <span className="text-[10px] text-gray-400 font-bold bg-[#f4f3ef] px-2 py-0.5 border border-[#e8e5de]">
+                          <span className="text-[10px] text-gray-400 font-bold bg-[#f1efea] px-2 py-0.5 border border-[#eae8e2]">
                             {item.duration}
                           </span>
                         </div>
@@ -262,7 +262,7 @@ export default async function ProfilePage({
 
                 {/* --- ABOUT SECTION --- */}
                 {section.type === 'about' && section.data.content && (
-                  <div className="highlight-premium bg-white border-[#e8e5de] p-6 text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">
+                  <div className="highlight-premium bg-white border-[#eae8e2] p-6 text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">
                     {section.data.content}
                   </div>
                 )}
@@ -279,7 +279,7 @@ export default async function ProfilePage({
       </div>
 
       {/* Footer Branding */}
-      <footer className="w-full text-center text-[10px] text-gray-400 mt-16 pt-8 border-t border-[#e8e5de]/55">
+      <footer className="w-full text-center text-[10px] text-gray-400 mt-16 pt-8 border-t border-[#eae8e2]/55">
         <Link href="/" className="hover:underline font-bold text-[#6B60A8]">
           Create your own digital home with ReadOnePage 🏠
         </Link>

@@ -87,7 +87,7 @@ function LoginContent() {
           <button
             onClick={handleGoogleSignIn}
             disabled={loading}
-            className="w-full flex items-center justify-center gap-3 px-6 py-3.5 bg-white border border-[#e8e5de] text-gray-700 text-sm font-bold hover:bg-gray-50 hover:border-gray-300 transition shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full flex items-center justify-center gap-3 px-6 py-3.5 bg-white border border-[#eae8e2] text-gray-700 text-sm font-bold hover:bg-gray-50 hover:border-gray-300 transition shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? (
               <div className="w-5 h-5 border-2 border-gray-300 border-t-[#6B60A8] animate-spin"></div>

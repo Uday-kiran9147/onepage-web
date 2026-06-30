@@ -176,7 +176,7 @@ export default function SettingsPage() {
       <div className="max-w-2xl mx-auto">
         
         {/* Header */}
-        <div className="flex items-center justify-between mb-8 border-b border-[#e8e5de] pb-6">
+        <div className="flex items-center justify-between mb-8 border-b border-[#eae8e2] pb-6">
           <div className="flex items-center gap-2">
             <div className="w-10 h-10 bg-gradient-to-tr from-[#6B60A8] to-[#D5E0DA] flex items-center justify-center text-white font-bold text-lg shadow-sm">
               R
@@ -208,8 +208,8 @@ export default function SettingsPage() {
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             
             {/* Avatar URL & Preview */}
-            <div className="flex items-center gap-4 pb-2 border-b border-[#e8e5de]/50">
-              <div className="w-16 h-16 bg-gray-100 border border-[#e8e5de] flex items-center justify-center overflow-hidden shadow-inner">
+            <div className="flex items-center gap-4 pb-2 border-b border-[#eae8e2]/50">
+              <div className="w-16 h-16 bg-gray-100 border border-[#eae8e2] flex items-center justify-center overflow-hidden shadow-inner">
                 {avatarWatch ? (
                   <img src={avatarWatch} alt="Avatar" className="w-full h-full object-cover" />
                 ) : (
@@ -223,7 +223,7 @@ export default function SettingsPage() {
                 <input
                   type="text"
                   {...register('avatarUrl')}
-                  className="w-full px-4 py-2.5 bg-[#f4f3ef] border border-[#e8e5de] text-gray-900 text-xs focus:outline-none"
+                  className="w-full px-4 py-2.5 bg-[#f1efea] border border-[#eae8e2] text-gray-900 text-xs focus:outline-none"
                   placeholder="https://example.com/avatar.jpg"
                 />
               </div>
@@ -239,12 +239,12 @@ export default function SettingsPage() {
                 <input
                   type="text"
                   {...register('username')}
-                  className={`w-full pl-[135px] pr-10 py-3.5 bg-[#f4f3ef] border ${
+                  className={`w-full pl-[135px] pr-10 py-3.5 bg-[#f1efea] border ${
                     errors.username || usernameStatus === 'taken' 
                       ? 'border-[#ECD5CC] focus:ring-[#ECD5CC]' 
                       : usernameStatus === 'available'
                       ? 'border-[#D5E0DA] focus:ring-[#1D9E75]'
-                      : 'border-[#e8e5de] focus:ring-[#D2CCE9]'
+                      : 'border-[#eae8e2] focus:ring-[#D2CCE9]'
                   } text-gray-900 text-sm font-bold focus:outline-none focus:ring-2 focus:border-transparent transition`}
                 />
                 <div className="absolute right-4 flex items-center justify-center">
@@ -269,7 +269,7 @@ export default function SettingsPage() {
               <input
                 type="text"
                 {...register('name')}
-                className="w-full px-4 py-3 bg-[#f4f3ef] border border-[#e8e5de] text-gray-900 text-sm font-semibold focus:outline-none"
+                className="w-full px-4 py-3 bg-[#f1efea] border border-[#eae8e2] text-gray-900 text-sm font-semibold focus:outline-none"
               />
               {errors.name && (
                 <p className="mt-1.5 text-xs text-[#A66E58]">{errors.name.message}</p>
@@ -285,7 +285,7 @@ export default function SettingsPage() {
                 {...register('bio')}
                 rows={3}
                 placeholder="Write a brief professional description..."
-                className="w-full px-4 py-3 bg-[#f4f3ef] border border-[#e8e5de] text-gray-900 placeholder-gray-400 text-sm focus:outline-none resize-none font-medium"
+                className="w-full px-4 py-3 bg-[#f1efea] border border-[#eae8e2] text-gray-900 placeholder-gray-400 text-sm focus:outline-none resize-none font-medium"
               />
               {errors.bio && (
                 <p className="mt-1.5 text-xs text-[#A66E58]">{errors.bio.message}</p>

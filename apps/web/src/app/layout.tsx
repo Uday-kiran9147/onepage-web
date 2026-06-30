@@ -5,6 +5,9 @@ export const metadata: Metadata = {
   title: 'ReadOnePage — Your Digital Home on the Internet',
   description:
     'Create a premium, minimal, and fast single-page digital home. Show who you are, what you build, and how to contact you in 60 seconds.',
+  icons: {
+    icon: '/logo.png',
+  },
 };
 
 export default function RootLayout({

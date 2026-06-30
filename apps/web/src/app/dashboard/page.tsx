@@ -327,7 +327,7 @@ export default function DashboardPage() {
       <div className="max-w-2xl mx-auto">
         
         {/* Header */}
-        <div className="flex items-center justify-between mb-8 border-b border-[#e8e5de] pb-6">
+        <div className="flex items-center justify-between mb-8 border-b border-[#eae8e2] pb-6">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-gradient-to-tr from-[#6B60A8] to-[#D5E0DA] flex items-center justify-center text-white font-bold text-lg shadow-sm">
               R
@@ -347,7 +347,7 @@ export default function DashboardPage() {
             </Link>
             <button
               onClick={handleLogout}
-              className="px-4 py-2 border border-[#e8e5de] bg-white text-gray-700 text-xs font-bold hover:bg-gray-50 transition shadow-sm"
+              className="px-4 py-2 border border-[#eae8e2] bg-white text-gray-700 text-xs font-bold hover:bg-gray-50 transition shadow-sm"
             >
               Logout
             </button>
@@ -372,7 +372,7 @@ export default function DashboardPage() {
           {!isEditingProfile ? (
             <div className="flex items-start justify-between gap-4">
               <div className="flex items-center gap-4">
-                <div className="w-14 h-14 bg-gray-100 border border-[#e8e5de] flex items-center justify-center overflow-hidden shadow-inner">
+                <div className="w-14 h-14 bg-gray-100 border border-[#eae8e2] flex items-center justify-center overflow-hidden shadow-inner">
                   {user.avatarUrl ? (
                     <img src={user.avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
                   ) : (
@@ -406,7 +406,7 @@ export default function DashboardPage() {
                     required
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="w-full px-3 py-2 text-xs bg-[#f4f3ef] border border-[#e8e5de] text-gray-900 font-semibold focus:outline-none"
+                    className="w-full px-3 py-2 text-xs bg-[#f1efea] border border-[#eae8e2] text-gray-900 font-semibold focus:outline-none"
                   />
                 </div>
                 <div>
@@ -415,7 +415,7 @@ export default function DashboardPage() {
                     type="text"
                     value={avatarUrl}
                     onChange={(e) => setAvatarUrl(e.target.value)}
-                    className="w-full px-3 py-2 text-xs bg-[#f4f3ef] border border-[#e8e5de] text-gray-900 focus:outline-none"
+                    className="w-full px-3 py-2 text-xs bg-[#f1efea] border border-[#eae8e2] text-gray-900 focus:outline-none"
                   />
                 </div>
               </div>
@@ -425,7 +425,7 @@ export default function DashboardPage() {
                   rows={2}
                   value={bio}
                   onChange={(e) => setBio(e.target.value)}
-                  className="w-full px-3 py-2 text-xs bg-[#f4f3ef] border border-[#e8e5de] text-gray-900 focus:outline-none resize-none font-serif-premium italic"
+                  className="w-full px-3 py-2 text-xs bg-[#f1efea] border border-[#eae8e2] text-gray-900 focus:outline-none resize-none font-serif-premium italic"
                   placeholder="Tell visitors about yourself in short sentences..."
                 />
               </div>
@@ -473,7 +473,7 @@ export default function DashboardPage() {
                   <select
                     value={newSecType}
                     onChange={(e) => setNewSecType(e.target.value as any)}
-                    className="w-full px-3.5 py-2.5 text-xs bg-white border border-[#e8e5de] focus:outline-none"
+                    className="w-full px-3.5 py-2.5 text-xs bg-white border border-[#eae8e2] focus:outline-none"
                   >
                     <option value="links">🔗 Social Links</option>
                     <option value="projects">💻 Projects</option>
@@ -489,7 +489,7 @@ export default function DashboardPage() {
                     placeholder="e.g. My Portfolio, Shipped Products"
                     value={newSecTitle}
                     onChange={(e) => setNewSecTitle(e.target.value)}
-                    className="w-full px-3.5 py-2.5 text-xs bg-white border border-[#e8e5de] focus:outline-none font-semibold text-gray-900"
+                    className="w-full px-3.5 py-2.5 text-xs bg-white border border-[#eae8e2] focus:outline-none font-semibold text-gray-900"
                   />
                 </div>
               </div>
@@ -497,7 +497,7 @@ export default function DashboardPage() {
                 <button
                   type="button"
                   onClick={() => setIsAddingSection(false)}
-                  className="px-4 py-2 bg-white border border-[#e8e5de] text-gray-600 hover:bg-gray-50"
+                  className="px-4 py-2 bg-white border border-[#eae8e2] text-gray-600 hover:bg-gray-50"
                 >
                   Cancel
                 </button>
@@ -546,7 +546,7 @@ export default function DashboardPage() {
                           required
                           value={editSecTitle}
                           onChange={(e) => setEditSecTitle(e.target.value)}
-                          className="px-2 py-0.5 border border-[#e8e5de] rounded-none font-bold text-sm text-gray-900 focus:outline-none"
+                          className="px-2 py-0.5 border border-[#eae8e2] rounded-none font-bold text-sm text-gray-900 focus:outline-none"
                         />
                       ) : (
                         <span className="font-bold text-sm text-gray-900">{section.title}</span>
@@ -613,7 +613,7 @@ export default function DashboardPage() {
                   </div>
 
                   {/* Section Contents */}
-                  <div className="border-t border-[#e8e5de]/55 pt-3 mt-3">
+                  <div className="border-t border-[#eae8e2]/55 pt-3 mt-3">
                     
                     {/* View mode */}
                     {!isEditing && (
@@ -622,7 +622,7 @@ export default function DashboardPage() {
                           <div className="flex flex-wrap gap-2">
                             {section.data.links?.length > 0 ? (
                               section.data.links.map((link: any, i: number) => (
-                                <span key={i} className="px-2.5 py-1 bg-[#f4f3ef] border border-[#e8e5de] font-semibold text-gray-700">
+                                <span key={i} className="px-2.5 py-1 bg-[#f1efea] border border-[#eae8e2] font-semibold text-gray-700">
                                   {link.label || 'Link'}
                                 </span>
                               ))
@@ -635,7 +635,7 @@ export default function DashboardPage() {
                           <div className="space-y-1.5">
                             {section.data.projects?.length > 0 ? (
                               section.data.projects.map((proj: any, i: number) => (
-                                <div key={i} className="flex justify-between items-baseline bg-[#f4f3ef]/50 p-2 border border-[#e8e5de]/30">
+                                <div key={i} className="flex justify-between items-baseline bg-[#f1efea]/50 p-2 border border-[#eae8e2]/30">
                                   <span className="font-bold text-gray-800">{proj.name}</span>
                                   <span className="text-[10px] text-gray-400">{proj.status}</span>
                                 </div>
@@ -649,7 +649,7 @@ export default function DashboardPage() {
                           <div className="space-y-1.5">
                             {section.data.items?.length > 0 ? (
                               section.data.items.map((item: any, i: number) => (
-                                <div key={i} className="flex justify-between items-baseline bg-[#f4f3ef]/50 p-2 border border-[#e8e5de]/30">
+                                <div key={i} className="flex justify-between items-baseline bg-[#f1efea]/50 p-2 border border-[#eae8e2]/30">
                                   <span className="font-bold text-gray-800">{item.role} @ {item.company}</span>
                                   <span className="text-[10px] text-gray-400">{item.duration}</span>
                                 </div>
@@ -673,20 +673,20 @@ export default function DashboardPage() {
                         {section.type === 'links' && (
                           <div className="space-y-3">
                             {editSecData.links?.map((link: any, linkIdx: number) => (
-                              <div key={linkIdx} className="flex items-center gap-2 bg-[#f4f3ef] p-3 border border-[#e8e5de]/60">
+                              <div key={linkIdx} className="flex items-center gap-2 bg-[#f1efea] p-3 border border-[#eae8e2]/60">
                                 <input
                                   type="text"
                                   placeholder="Label (e.g. Portfolio)"
                                   value={link.label}
                                   onChange={(e) => updateLinkItem(linkIdx, 'label', e.target.value)}
-                                  className="w-1/3 px-2 py-1 text-xs border border-[#e8e5de] focus:outline-none"
+                                  className="w-1/3 px-2 py-1 text-xs border border-[#eae8e2] focus:outline-none"
                                 />
                                 <input
                                   type="text"
                                   placeholder="URL (https://...)"
                                   value={link.url}
                                   onChange={(e) => updateLinkItem(linkIdx, 'url', e.target.value)}
-                                  className="flex-1 px-2 py-1 text-xs border border-[#e8e5de] focus:outline-none"
+                                  className="flex-1 px-2 py-1 text-xs border border-[#eae8e2] focus:outline-none"
                                 />
                                 <button
                                   type="button"
@@ -711,7 +711,7 @@ export default function DashboardPage() {
                         {section.type === 'projects' && (
                           <div className="space-y-4">
                             {editSecData.projects?.map((proj: any, projIdx: number) => (
-                              <div key={projIdx} className="bg-[#f4f3ef] p-4 border border-[#e8e5de]/60 space-y-2 relative">
+                              <div key={projIdx} className="bg-[#f1efea] p-4 border border-[#eae8e2]/60 space-y-2 relative">
                                 <button
                                   type="button"
                                   onClick={() => deleteProjectItem(projIdx)}
@@ -725,14 +725,14 @@ export default function DashboardPage() {
                                     placeholder="Project Name"
                                     value={proj.name}
                                     onChange={(e) => updateProjectItem(projIdx, 'name', e.target.value)}
-                                    className="px-2 py-1 text-xs border border-[#e8e5de] focus:outline-none"
+                                    className="px-2 py-1 text-xs border border-[#eae8e2] focus:outline-none"
                                   />
                                   <input
                                     type="text"
                                     placeholder="Link URL"
                                     value={proj.url}
                                     onChange={(e) => updateProjectItem(projIdx, 'url', e.target.value)}
-                                    className="px-2 py-1 text-xs border border-[#e8e5de] focus:outline-none"
+                                    className="px-2 py-1 text-xs border border-[#eae8e2] focus:outline-none"
                                   />
                                 </div>
                                 <input
@@ -740,7 +740,7 @@ export default function DashboardPage() {
                                   placeholder="Short Description"
                                   value={proj.description}
                                   onChange={(e) => updateProjectItem(projIdx, 'description', e.target.value)}
-                                  className="w-full px-2 py-1 text-xs border border-[#e8e5de] focus:outline-none"
+                                  className="w-full px-2 py-1 text-xs border border-[#eae8e2] focus:outline-none"
                                 />
                                 <div className="grid grid-cols-2 gap-2">
                                   <input
@@ -748,12 +748,12 @@ export default function DashboardPage() {
                                     placeholder="Tags (comma-separated, e.g. React, Next.js)"
                                     value={proj.tags?.join(', ') || ''}
                                     onChange={(e) => updateProjectItem(projIdx, 'tags', e.target.value.split(',').map((t: string) => t.trim()))}
-                                    className="px-2 py-1 text-xs border border-[#e8e5de] focus:outline-none"
+                                    className="px-2 py-1 text-xs border border-[#eae8e2] focus:outline-none"
                                   />
                                   <select
                                     value={proj.status}
                                     onChange={(e) => updateProjectItem(projIdx, 'status', e.target.value)}
-                                    className="px-2 py-1 text-xs border border-[#e8e5de] focus:outline-none bg-white"
+                                    className="px-2 py-1 text-xs border border-[#eae8e2] focus:outline-none bg-white"
                                   >
                                     <option value="in-progress">🏗️ In Progress</option>
                                     <option value="shipped">🚀 Shipped</option>
@@ -776,7 +776,7 @@ export default function DashboardPage() {
                         {section.type === 'experience' && (
                           <div className="space-y-4">
                             {editSecData.items?.map((item: any, itemIdx: number) => (
-                              <div key={itemIdx} className="bg-[#f4f3ef] p-4 border border-[#e8e5de]/60 space-y-2 relative">
+                              <div key={itemIdx} className="bg-[#f1efea] p-4 border border-[#eae8e2]/60 space-y-2 relative">
                                 <button
                                   type="button"
                                   onClick={() => deleteExperienceItem(itemIdx)}
@@ -790,21 +790,21 @@ export default function DashboardPage() {
                                     placeholder="Role (e.g. Designer)"
                                     value={item.role}
                                     onChange={(e) => updateExperienceItem(itemIdx, 'role', e.target.value)}
-                                    className="col-span-1 px-2 py-1 text-xs border border-[#e8e5de] focus:outline-none"
+                                    className="col-span-1 px-2 py-1 text-xs border border-[#eae8e2] focus:outline-none"
                                   />
                                   <input
                                     type="text"
                                     placeholder="Company / School"
                                     value={item.company}
                                     onChange={(e) => updateExperienceItem(itemIdx, 'company', e.target.value)}
-                                    className="col-span-1 px-2 py-1 text-xs border border-[#e8e5de] focus:outline-none"
+                                    className="col-span-1 px-2 py-1 text-xs border border-[#eae8e2] focus:outline-none"
                                   />
                                   <input
                                     type="text"
                                     placeholder="Duration (e.g. 2021 - 2023)"
                                     value={item.duration}
                                     onChange={(e) => updateExperienceItem(itemIdx, 'duration', e.target.value)}
-                                    className="col-span-1 px-2 py-1 text-xs border border-[#e8e5de] focus:outline-none"
+                                    className="col-span-1 px-2 py-1 text-xs border border-[#eae8e2] focus:outline-none"
                                   />
                                 </div>
                                 <textarea
@@ -812,7 +812,7 @@ export default function DashboardPage() {
                                   placeholder="Job / course descriptions..."
                                   value={item.description}
                                   onChange={(e) => updateExperienceItem(itemIdx, 'description', e.target.value)}
-                                  className="w-full px-2 py-1 text-xs border border-[#e8e5de] focus:outline-none resize-none"
+                                  className="w-full px-2 py-1 text-xs border border-[#eae8e2] focus:outline-none resize-none"
                                 />
                               </div>
                             ))}
@@ -834,7 +834,7 @@ export default function DashboardPage() {
                               value={editSecData.content || ''}
                               onChange={(e) => setEditSecData({ ...editSecData, content: e.target.value })}
                               placeholder="Write anything you want in standard paragraphs..."
-                              className="w-full px-3 py-2 text-xs bg-[#f4f3ef] border border-[#e8e5de] text-gray-900 focus:outline-none"
+                              className="w-full px-3 py-2 text-xs bg-[#f1efea] border border-[#eae8e2] text-gray-900 focus:outline-none"
                             />
                           </div>
                         )}

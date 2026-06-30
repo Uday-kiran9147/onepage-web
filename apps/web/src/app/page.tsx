@@ -45,7 +45,7 @@ export default function LandingPage() {
               type="text" 
               placeholder="username" 
               required
-              className="w-full pl-[135px] pr-32 py-4 bg-white border border-[#e8e5de] text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#D2CCE9] focus:border-transparent transition shadow-sm font-semibold"
+              className="w-full pl-[135px] pr-32 py-4 bg-white border border-[#eae8e2] text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#D2CCE9] focus:border-transparent transition shadow-sm font-semibold"
             />
             <button type="submit" className="absolute right-2 top-2 bottom-2 px-5 bg-[#6B60A8] text-white text-xs font-bold hover:bg-[#554C8C] transition">
               Claim Link
@@ -85,7 +85,7 @@ export default function LandingPage() {
       {/* Visual Preview Card */}
       <section className="mb-20">
         <div className="label-premium">Profile Mockup — readonepage.xyz/uday</div>
-        <div className="bg-gradient-to-br from-[#F2F0FA] to-[#EEEFFE] p-8 border border-[#e8e5de] shadow-sm">
+        <div className="bg-gradient-to-br from-[#F2F0FA] to-[#EEEFFE] p-8 border border-[#eae8e2] shadow-sm">
           <div className="flex flex-col sm:flex-row items-center gap-6 text-center sm:text-left mb-6">
             <div className="w-16 h-16 bg-[#D2CCE9] text-white font-bold text-2xl flex items-center justify-center shadow-md">
               U
@@ -115,9 +115,9 @@ export default function LandingPage() {
             <div className="bg-white/70 backdrop-blur-sm border border-[#D2CCE9]/30 p-4">
               <div className="text-[10px] font-bold uppercase tracking-wider text-[#554C8C] mb-2">🔗 Connect</div>
               <div className="flex gap-2">
-                <span className="px-3 py-1.5 bg-gray-100 border border-[#e8e5de] text-[10px] font-bold text-gray-700">GitHub</span>
-                <span className="px-3 py-1.5 bg-gray-100 border border-[#e8e5de] text-[10px] font-bold text-gray-700">Twitter</span>
-                <span className="px-3 py-1.5 bg-gray-100 border border-[#e8e5de] text-[10px] font-bold text-gray-700">LinkedIn</span>
+                <span className="px-3 py-1.5 bg-gray-100 border border-[#eae8e2] text-[10px] font-bold text-gray-700">GitHub</span>
+                <span className="px-3 py-1.5 bg-gray-100 border border-[#eae8e2] text-[10px] font-bold text-gray-700">Twitter</span>
+                <span className="px-3 py-1.5 bg-gray-100 border border-[#eae8e2] text-[10px] font-bold text-gray-700">LinkedIn</span>
               </div>
             </div>
           </div>
@@ -125,7 +125,7 @@ export default function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-[#e8e5de] pt-8 text-center text-xs text-gray-400">
+      <footer className="border-t border-[#eae8e2] pt-8 text-center text-xs text-gray-400">
         <p className="font-serif-premium italic text-sm text-[#554C8C] mb-1">Make your internet home today.</p>
         <p>&copy; {new Date().getFullYear()} ReadOnePage. All rights reserved.</p>
       </footer>
