@@ -26,7 +26,7 @@ export default function LandingPage() {
       {/* Hero Section */}
       <section className="mb-20 text-center sm:text-left">
         <div className="label-premium inline-block px-3 py-1 bg-[#F2F0FA] text-[#554C8C] mb-6">
-          ✨ Reimagining Linktree
+          A digital home on the internet.
         </div>
         <h2 className="text-4xl sm:text-5xl font-black tracking-tight text-gray-900 leading-tight mb-6">
           Your digital home <br />
