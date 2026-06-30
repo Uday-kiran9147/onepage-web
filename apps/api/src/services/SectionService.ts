@@ -1,6 +1,6 @@
 import { db, QueryDocumentSnapshot } from '../lib/firebase';
 import { AppError } from '../types/AppError';
-import { SectionType } from '@mirror/shared';
+import { SectionType } from '@readonepage/shared';
 
 export class SectionService {
   /**

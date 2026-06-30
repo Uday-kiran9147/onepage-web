@@ -1,5 +1,5 @@
 {
-  "name": "@mirror/api",
+  "name": "@readonepage/api",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@google/generative-ai": "^0.21.0",
-    "@mirror/shared": "workspace:*",
+    "@readonepage/shared": "workspace:*",
     "bullmq": "^5.12.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",

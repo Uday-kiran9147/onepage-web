@@ -12,8 +12,8 @@ export default function GlobalNotFound() {
       <div className="w-full max-w-sm text-center">
         
         {/* Branding Logo */}
-        <div className="inline-flex items-center justify-center w-12 h-12 bg-gradient-to-tr from-[#6B60A8] to-[#D5E0DA] text-white font-bold text-lg shadow-sm mb-8">
-          R
+        <div className="w-12 h-12 border border-[#eae8e2] bg-white flex items-center justify-center overflow-hidden shadow-sm mb-8 mx-auto">
+          <img src="/logo.png" alt="ReadOnePage Logo" className="w-full h-full object-cover" />
         </div>
 
         {/* Not Found Card */}

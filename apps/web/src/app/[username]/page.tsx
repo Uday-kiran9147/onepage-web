@@ -27,13 +27,14 @@ interface ExperienceItem {
 
 interface Section {
   id: string;
-  type: 'links' | 'projects' | 'experience' | 'about';
+  type: 'links' | 'projects' | 'experience' | 'about' | 'skills';
   title: string;
   data: {
     links?: LinkItem[];
     projects?: ProjectItem[];
     items?: ExperienceItem[];
     content?: string;
+    skills?: string[];
   };
   order: number;
 }
@@ -265,6 +266,20 @@ export default async function ProfilePage({
                 {section.type === 'about' && section.data.content && (
                   <div className="highlight-premium bg-white border-[#eae8e2] p-6 text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">
                     {section.data.content}
+                  </div>
+                )}
+
+                {/* --- SKILLS SECTION --- */}
+                {section.type === 'skills' && section.data.skills && (
+                  <div className="flex flex-wrap gap-2">
+                    {section.data.skills.map((skill, i) => (
+                      <span
+                        key={i}
+                        className="px-3.5 py-1.5 bg-[#F2F0FA] text-[#554C8C] border border-[#D2CCE9] font-bold text-xs shadow-sm hover:scale-105 transition duration-150"
+                      >
+                        {skill}
+                      </span>
+                    ))}
                   </div>
                 )}
 

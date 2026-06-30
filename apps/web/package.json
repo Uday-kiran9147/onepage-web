@@ -1,5 +1,5 @@
 {
-  "name": "@mirror/web",
+  "name": "@readonepage/web",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
-    "@mirror/shared": "workspace:*",
+    "@readonepage/shared": "workspace:*",
     "firebase": "^12.15.0",
     "next": "^14.2.0",
     "react": "^18.3.0",

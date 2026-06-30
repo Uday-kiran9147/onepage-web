@@ -59,8 +59,8 @@ function LoginContent() {
         
         {/* Logo */}
         <div className="flex items-center justify-center gap-3 mb-8">
-          <div className="w-12 h-12 bg-gradient-to-tr from-[#6B60A8] to-[#D5E0DA] flex items-center justify-center text-white font-bold text-xl shadow-md">
-            R
+          <div className="w-12 h-12 border border-[#eae8e2] bg-white flex items-center justify-center overflow-hidden shadow-sm">
+            <img src="/logo.png" alt="ReadOnePage Logo" className="w-full h-full object-cover" />
           </div>
           <div className="text-left">
             <h1 className="text-2xl font-black tracking-tight text-gray-900 leading-none">ReadOnePage</h1>

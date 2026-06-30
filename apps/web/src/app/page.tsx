@@ -90,8 +90,8 @@ export default function LandingPage() {
       {/* ─── Navigation Header ───────────────────────────────────── */}
       <header className="max-w-4xl w-full mx-auto px-6 py-6 flex items-center justify-between border-b border-[#eae8e2]">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-gradient-to-tr from-[#6B60A8] to-[#D5E0DA] flex items-center justify-center text-white font-bold text-lg shadow-sm">
-            R
+          <div className="w-10 h-10 border border-[#eae8e2] bg-white flex items-center justify-center overflow-hidden shadow-sm">
+            <img src="/logo.png" alt="ReadOnePage Logo" className="w-full h-full object-cover" />
           </div>
           <div>
             <h1 className="text-lg font-black tracking-tight text-gray-900 leading-none">ReadOnePage</h1>
@@ -252,21 +252,27 @@ export default function LandingPage() {
         <div className="label-premium">The Workflow</div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="card-premium bg-white">
-            <div className="text-xl mb-2">🔑</div>
+            <svg className="w-5 h-5 text-[#554C8C] mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+            </svg>
             <h3 className="font-bold text-xs text-gray-900 mb-1">One URL</h3>
             <p className="text-xs text-gray-500 leading-relaxed">
               LinkedIn + GitHub + Resume + Portfolio merged into one beautiful, fast, and unified link.
             </p>
           </div>
           <div className="card-premium bg-white">
-            <div className="text-xl mb-2">🧩</div>
+            <svg className="w-5 h-5 text-[#557A68] mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+            </svg>
             <h3 className="font-bold text-xs text-gray-900 mb-1">Sections System</h3>
             <p className="text-xs text-gray-500 leading-relaxed">
               Power your profile with modular, structured sections (Links, Projects, Experience, About) without database hassle.
             </p>
           </div>
           <div className="card-premium bg-white">
-            <div className="text-xl mb-2">⚡</div>
+            <svg className="w-5 h-5 text-[#9C7F59] mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
             <h3 className="font-bold text-xs text-gray-900 mb-1">Premium & Minimal</h3>
             <p className="text-xs text-gray-500 leading-relaxed">
               Designed to look high-end. Blazing fast load times. Optimized for visitors to read in 60 seconds.

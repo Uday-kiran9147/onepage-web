@@ -9,7 +9,7 @@ importers:
       '@google/generative-ai':
         specifier: ^0.21.0
         version: 0.21.0
-      '@mirror/shared':
+      '@readonepage/shared':
         specifier: workspace:*
         version: link:../../packages/shared
       bullmq:
@@ -73,7 +73,7 @@ importers:
       '@hookform/resolvers':
         specifier: ^3.9.0
         version: 3.9.0(react-hook-form@7.53.0)
-      '@mirror/shared':
+      '@readonepage/shared':
         specifier: workspace:*
         version: link:../../packages/shared
       firebase:

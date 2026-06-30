@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { onAuthStateChanged, User as FirebaseUser } from 'firebase/auth';
 import { doc, getDoc, updateDoc, writeBatch } from 'firebase/firestore';
-import { ProfileUpdateSchema, type ProfileUpdate } from '@mirror/shared';
+import { ProfileUpdateSchema, type ProfileUpdate } from '@readonepage/shared';
 import Link from 'next/link';
 import { auth, db } from '../../lib/firebase';
 
@@ -186,8 +186,8 @@ export default function SettingsPage() {
         {/* Header */}
         <div className="flex items-center justify-between mb-8 border-b border-[#eae8e2] pb-6">
           <div className="flex items-center gap-2">
-            <div className="w-10 h-10 bg-gradient-to-tr from-[#6B60A8] to-[#D5E0DA] flex items-center justify-center text-white font-bold text-lg shadow-sm">
-              R
+            <div className="w-10 h-10 border border-[#eae8e2] bg-white flex items-center justify-center overflow-hidden shadow-sm">
+              <img src="/logo.png" alt="ReadOnePage Logo" className="w-full h-full object-cover" />
             </div>
             <span className="font-bold text-lg text-gray-900 tracking-tight">ReadOnePage</span>
           </div>

@@ -16,8 +16,8 @@
     "plugins": [{ "name": "next" }],
     "paths": {
       "@/*": ["./src/*"],
-      "@mirror/shared": ["../../packages/shared/src/index.ts"],
-      "@mirror/shared/*": ["../../packages/shared/src/*"]
+      "@readonepage/shared": ["../../packages/shared/src/index.ts"],
+      "@readonepage/shared/*": ["../../packages/shared/src/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

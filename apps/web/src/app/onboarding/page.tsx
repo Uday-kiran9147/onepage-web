@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { onAuthStateChanged, User as FirebaseUser } from 'firebase/auth';
 import { doc, getDoc, writeBatch, collection } from 'firebase/firestore';
-import { ProfileUpdateSchema, type ProfileUpdate } from '@mirror/shared';
+import { ProfileUpdateSchema, type ProfileUpdate } from '@readonepage/shared';
 import { z } from 'zod';
 import { auth, db } from '../../lib/firebase';
 
@@ -235,8 +235,8 @@ function OnboardingContent() {
         
         {/* Onboarding Header */}
         <div className="text-center mb-10">
-          <div className="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-tr from-[#6B60A8] to-[#D5E0DA] mb-4 shadow-sm text-white font-bold text-xl">
-             R
+          <div className="w-14 h-14 border border-[#eae8e2] bg-white flex items-center justify-center overflow-hidden shadow-sm mb-4 mx-auto">
+            <img src="/logo.png" alt="ReadOnePage Logo" className="w-full h-full object-cover" />
           </div>
           <h1 className="text-2xl font-black text-gray-900 tracking-tight">Set up your ReadOnePage</h1>
           <p className="text-sm text-gray-500 mt-1">Claim your public profile link and layout</p>

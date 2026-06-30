@@ -1,10 +1,10 @@
 {
-  "name": "mirror",
+  "name": "readonepage",
   "private": true,
   "scripts": {
-    "dev:api": "pnpm --filter @mirror/api dev",
-    "dev:web": "pnpm --filter @mirror/web dev",
-    "dev:workers": "pnpm --filter @mirror/api workers",
+    "dev:api": "pnpm --filter @readonepage/api dev",
+    "dev:web": "pnpm --filter @readonepage/web dev",
+    "dev:workers": "pnpm --filter @readonepage/api workers",
     "build": "pnpm -r build",
     "lint": "pnpm -r lint"
   },

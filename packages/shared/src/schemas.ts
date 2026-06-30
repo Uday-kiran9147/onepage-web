@@ -52,7 +52,7 @@ export type ExperienceItem = z.infer<typeof ExperienceItemSchema>;
 
 // ─── Section Schema ──────────────────────────────────────────────
 
-export const SectionTypeEnum = z.enum(['links', 'projects', 'experience', 'about']);
+export const SectionTypeEnum = z.enum(['links', 'projects', 'experience', 'about', 'skills']);
 export type SectionType = z.infer<typeof SectionTypeEnum>;
 
 export const SectionSchema = z.object({

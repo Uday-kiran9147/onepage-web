@@ -20,7 +20,7 @@ import { auth, db } from '../../lib/firebase';
 
 interface Section {
   id: string;
-  type: 'links' | 'projects' | 'experience' | 'about';
+  type: 'links' | 'projects' | 'experience' | 'about' | 'skills';
   title: string;
   data: any;
   order: number;
@@ -52,7 +52,7 @@ export default function DashboardPage() {
 
   // Section Create Form fields
   const [isAddingSection, setIsAddingSection] = useState(false);
-  const [newSecType, setNewSecType] = useState<'links' | 'projects' | 'experience' | 'about'>('links');
+  const [newSecType, setNewSecType] = useState<'links' | 'projects' | 'experience' | 'about' | 'skills'>('links');
   const [newSecTitle, setNewSecTitle] = useState('');
 
   // Active section editing
@@ -151,6 +151,7 @@ export default function DashboardPage() {
     else if (newSecType === 'projects') defaultData = { projects: [] };
     else if (newSecType === 'experience') defaultData = { items: [] };
     else if (newSecType === 'about') defaultData = { content: '' };
+    else if (newSecType === 'skills') defaultData = { skills: [] };
 
     // Calculate next order
     let nextOrder = 0;
@@ -329,8 +330,8 @@ export default function DashboardPage() {
         {/* Header */}
         <div className="flex items-center justify-between mb-8 border-b border-[#eae8e2] pb-6">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-tr from-[#6B60A8] to-[#D5E0DA] flex items-center justify-center text-white font-bold text-lg shadow-sm">
-              R
+            <div className="w-10 h-10 border border-[#eae8e2] bg-white flex items-center justify-center overflow-hidden shadow-sm">
+              <img src="/logo.png" alt="ReadOnePage Logo" className="w-full h-full object-cover" />
             </div>
             <div>
               <span className="font-bold text-lg text-gray-900 tracking-tight block">ReadOnePage</span>
@@ -479,6 +480,7 @@ export default function DashboardPage() {
                     <option value="projects">💻 Projects</option>
                     <option value="experience">💼 Work Experience</option>
                     <option value="about">📝 Rich Text / About</option>
+                    <option value="skills">🛠️ Skills / Tech Stack</option>
                   </select>
                 </div>
                 <div>
@@ -539,6 +541,7 @@ export default function DashboardPage() {
                         {section.type === 'projects' && '💻'}
                         {section.type === 'experience' && '💼'}
                         {section.type === 'about' && '📝'}
+                        {section.type === 'skills' && '🛠️'}
                       </span>
                       {isEditing ? (
                         <input
@@ -662,6 +665,19 @@ export default function DashboardPage() {
                         {section.type === 'about' && (
                           <p className="whitespace-pre-wrap leading-relaxed">{section.data.content || <span className="italic text-gray-400">No text defined.</span>}</p>
                         )}
+                        {section.type === 'skills' && (
+                          <div className="flex flex-wrap gap-1.5">
+                            {section.data.skills?.length > 0 ? (
+                              section.data.skills.map((skill: string, i: number) => (
+                                <span key={i} className="px-2.5 py-1 bg-[#F2F0FA] text-[#554C8C] border border-[#D2CCE9] font-bold text-[10px]">
+                                  {skill}
+                                </span>
+                              ))
+                            ) : (
+                              <p className="italic text-gray-400">No skills added yet.</p>
+                            )}
+                          </div>
+                        )}
                       </div>
                     )}
 
@@ -669,6 +685,68 @@ export default function DashboardPage() {
                     {isEditing && (
                       <div className="space-y-4">
                         
+                        {/* Skills section edit */}
+                        {section.type === 'skills' && (
+                          <div className="space-y-3">
+                            <div className="flex flex-wrap gap-1.5 mb-2">
+                              {editSecData.skills?.map((skill: string, skillIdx: number) => (
+                                <div key={skillIdx} className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-[#F2F0FA] text-[#554C8C] border border-[#D2CCE9] font-bold text-xs">
+                                  <span>{skill}</span>
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      const updated = (editSecData.skills || []).filter((_: any, i: number) => i !== skillIdx);
+                                      setEditSecData({ ...editSecData, skills: updated });
+                                    }}
+                                    className="font-extrabold hover:text-red-700 ml-1"
+                                  >
+                                    ✕
+                                  </button>
+                                </div>
+                              ))}
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <input
+                                type="text"
+                                id="new-skill-input"
+                                placeholder="Add skill tag (e.g. Next.js)"
+                                onKeyDown={(e) => {
+                                  if (e.key === 'Enter') {
+                                    e.preventDefault();
+                                    const val = (e.target as HTMLInputElement).value.trim();
+                                    if (val && !(editSecData.skills || []).includes(val)) {
+                                      setEditSecData({
+                                        ...editSecData,
+                                        skills: [...(editSecData.skills || []), val]
+                                      });
+                                      (e.target as HTMLInputElement).value = '';
+                                    }
+                                  }
+                                }}
+                                className="px-3 py-1.5 text-xs border border-[#eae8e2] bg-white focus:outline-none"
+                              />
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  const input = document.getElementById('new-skill-input') as HTMLInputElement;
+                                  const val = input?.value.trim();
+                                  if (val && !(editSecData.skills || []).includes(val)) {
+                                    setEditSecData({
+                                      ...editSecData,
+                                      skills: [...(editSecData.skills || []), val]
+                                    });
+                                    if (input) input.value = '';
+                                  }
+                                }}
+                                className="px-3 py-1.5 bg-[#6B60A8] text-white text-xs font-bold hover:bg-[#554C8C]"
+                              >
+                                Add
+                              </button>
+                            </div>
+                            <p className="text-[10px] text-gray-400">Press Enter or click Add to append a skill tag.</p>
+                          </div>
+                        )}
+
                         {/* Links section edit */}
                         {section.type === 'links' && (
                           <div className="space-y-3">
