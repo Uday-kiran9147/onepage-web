@@ -29,7 +29,7 @@ function OnboardingContent() {
   const [currentUser, setCurrentUser] = useState<FirebaseUser | null>(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
-  const [usernameStatus, setUsernameStatus] = useState<'idle' | 'checking' | 'available' | 'taken' | 'error'>('idle');
+  const [usernameStatus, setUsernameStatus] = useState<'idle' | 'checking' | 'available' | 'taken' | 'invalid' | 'error'>('idle');
   const [error, setError] = useState<string | null>(null);
 
   const {
@@ -121,6 +121,14 @@ function OnboardingContent() {
     }
 
     const cleaned = usernameValue.toLowerCase().trim();
+
+    // Check regex format
+    const formatRegex = /^[a-z0-9_-]+$/;
+    if (!formatRegex.test(cleaned)) {
+      setUsernameStatus('invalid');
+      return;
+    }
+
     if (RESERVED_USERNAMES.has(cleaned)) {
       setUsernameStatus('taken');
       return;
@@ -278,7 +286,7 @@ function OnboardingContent() {
                   type="text"
                   {...register('username')}
                   className={`w-full pl-[135px] pr-10 py-3.5 bg-[#f1efea] border ${
-                    errors.username || usernameStatus === 'taken' 
+                    errors.username || usernameStatus === 'taken' || usernameStatus === 'invalid'
                       ? 'border-[#ECD5CC] focus:ring-[#ECD5CC]' 
                       : usernameStatus === 'available'
                       ? 'border-[#D5E0DA] focus:ring-[#557A68]'
@@ -288,7 +296,7 @@ function OnboardingContent() {
                 <div className="absolute right-4 flex items-center justify-center">
                   {usernameStatus === 'checking' && <div className="w-4 h-4 border-2 border-gray-300 border-t-[#6B60A8] animate-spin"></div>}
                   {usernameStatus === 'available' && <span className="text-[#557A68] font-bold">✓</span>}
-                  {usernameStatus === 'taken' && <span className="text-[#A66E58] font-bold">✕</span>}
+                  {(usernameStatus === 'taken' || usernameStatus === 'invalid') && <span className="text-[#A66E58] font-bold">✕</span>}
                 </div>
               </div>
               {errors.username && (
@@ -296,6 +304,9 @@ function OnboardingContent() {
               )}
               {usernameStatus === 'taken' && !errors.username && (
                 <p className="mt-1.5 text-xs text-[#A66E58]">Username is already taken or reserved</p>
+              )}
+              {usernameStatus === 'invalid' && !errors.username && (
+                <p className="mt-1.5 text-xs text-[#A66E58]">Use lowercase letters, numbers, hyphens, or underscores only (no spaces)</p>
               )}
             </div>
 
@@ -418,7 +429,7 @@ function OnboardingContent() {
 
             <button
               type="submit"
-              disabled={submitting || usernameStatus === 'taken' || !isValid}
+              disabled={submitting || usernameStatus === 'taken' || usernameStatus === 'invalid' || !isValid}
               className="w-full py-4 bg-[#6B60A8] text-white font-extrabold text-sm hover:bg-[#554C8C] transition shadow-sm disabled:opacity-50 disabled:cursor-not-allowed mt-4"
             >
               {submitting ? 'Saving Profile...' : 'Finish Setup →'}

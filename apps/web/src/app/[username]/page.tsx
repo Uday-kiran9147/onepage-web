@@ -65,6 +65,7 @@ async function getProfile(username: string): Promise<ProfileData | null> {
     if (!userSnap.exists()) return null;
 
     const profileData = userSnap.data();
+    if (!profileData.isOnboarded) return null;
 
     // Fetch user sections
     const sectionsRef = collection(db, 'users', uid, 'sections');
@@ -90,7 +91,7 @@ async function getProfile(username: string): Promise<ProfileData | null> {
     };
   } catch (err) {
     console.error('Error fetching profile:', err);
-    return null;
+    throw err;
   }
 }
 

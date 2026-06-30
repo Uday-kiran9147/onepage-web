@@ -1,80 +1,273 @@
+'use client';
+
+import { useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
+
+interface MockSection {
+  title: string;
+  type: 'links' | 'projects' | 'experience' | 'about';
+  data: any;
+}
+
+const MOCK_SECTIONS: MockSection[] = [
+  {
+    title: 'Connect',
+    type: 'links',
+    data: {
+      links: [
+        { label: 'GitHub', url: 'https://github.com' },
+        { label: 'Twitter / X', url: 'https://x.com' },
+        { label: 'LinkedIn', url: 'https://linkedin.com' },
+      ],
+    },
+  },
+  {
+    title: 'Featured Projects',
+    type: 'projects',
+    data: {
+      projects: [
+        {
+          name: 'Antigravity AI',
+          description: 'Autonomous coding agent platform designed for fast and scalable software engineering.',
+          status: 'shipped',
+          tags: ['TypeScript', 'Next.js', 'Go'],
+        },
+        {
+          name: 'OnePage Manager',
+          description: 'A minimal dashboard to orchestrate links, portfolios, and online workspaces.',
+          status: 'building',
+          tags: ['React', 'Firebase', 'Tailwind'],
+        },
+      ],
+    },
+  },
+  {
+    title: 'Experience',
+    type: 'experience',
+    data: {
+      items: [
+        {
+          role: 'Staff Systems Engineer',
+          company: 'Hyperlink Labs',
+          duration: '2024 - Present',
+          description: 'Designing distributed services and high-throughput developer tooling.',
+        },
+        {
+          role: 'Full Stack Developer',
+          company: 'Pixel Craft Studio',
+          duration: '2022 - 2024',
+          description: 'Built customer portals, fast static pages, and modular dashboard widgets.',
+        },
+      ],
+    },
+  },
+  {
+    title: 'About Me',
+    type: 'about',
+    data: {
+      content: 'I am a software engineer focused on building clean, high-performance web products. I believe the internet should be simple, beautifully typeset, and blazingly fast.',
+    },
+  },
+];
 
 export default function LandingPage() {
+  const [claimText, setClaimText] = useState('');
+  const [activeTab, setActiveTab] = useState<'all' | 'links' | 'projects' | 'experience' | 'about'>('all');
+
+  const filteredSections = activeTab === 'all' 
+    ? MOCK_SECTIONS 
+    : MOCK_SECTIONS.filter(s => s.type === activeTab);
+
+  const handleClaimChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // Sanitize username input
+    const val = e.target.value.toLowerCase().replace(/[^a-z0-9_-]/g, '');
+    setClaimText(val);
+  };
+
   return (
-    <main className="min-h-screen max-w-3xl mx-auto px-6 py-16 flex flex-col justify-between bg-[#f7f6f3]">
-      {/* Header */}
-      <header className="flex items-center justify-between gap-4 mb-16">
+    <main className="min-h-screen bg-[#f7f6f3] text-[#2d2d2d] flex flex-col justify-between">
+      
+      {/* ─── Navigation Header ───────────────────────────────────── */}
+      <header className="max-w-4xl w-full mx-auto px-6 py-6 flex items-center justify-between border-b border-[#eae8e2]">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-gradient-to-tr from-[#6B60A8] to-[#D5E0DA] flex items-center justify-center text-white font-bold text-lg shadow-sm">
             R
           </div>
           <div>
-            <h1 className="text-xl font-bold tracking-tight text-gray-900 leading-none">ReadOnePage</h1>
-            <span className="text-[10px] uppercase tracking-widest text-[#6B60A8] font-bold">digital home</span>
+            <h1 className="text-lg font-black tracking-tight text-gray-900 leading-none">ReadOnePage</h1>
+            <span className="text-[9px] uppercase tracking-widest text-[#6B60A8] font-extrabold block mt-0.5">digital home</span>
           </div>
         </div>
         <Link
           href="/login"
-          className="inline-flex justify-center items-center px-5 py-2 text-xs font-bold bg-[#6B60A8] text-white hover:bg-[#554C8C] transition shadow-sm"
+          className="inline-flex justify-center items-center px-5 py-2 text-xs font-bold bg-[#6B60A8] text-white hover:bg-[#554C8C] transition duration-150 shadow-sm"
         >
           Sign in
         </Link>
       </header>
 
-      {/* Hero Section */}
-      <section className="mb-20 text-center sm:text-left">
-        <div className="label-premium inline-block px-3 py-1 bg-[#F2F0FA] text-[#554C8C] mb-6">
-          A digital home on the internet.
-        </div>
-        <h2 className="text-4xl sm:text-5xl font-black tracking-tight text-gray-900 leading-tight mb-6">
-          Your digital home <br />
-          on the internet.
-        </h2>
-        <p className="text-lg text-gray-600 font-medium max-w-xl mb-8 leading-relaxed">
-          Instead of just a list of links, ReadOnePage is a premium, minimal page where anyone can understand who you are, what you build, and how to contact you in <span className="text-[#6B60A8] font-bold">60 seconds</span>.
-        </p>
+      {/* ─── Hero Section ────────────────────────────────────────── */}
+      <section className="max-w-4xl w-full mx-auto px-6 pt-16 pb-12 grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
+        
+        {/* Left Column: Title & Claim */}
+        <div className="md:col-span-7 space-y-6 text-center md:text-left">
+          <div className="inline-block px-3 py-1 text-[10px] font-bold uppercase tracking-wider bg-[#F2F0FA] text-[#554C8C]">
+            ✨ The Minimalist Linktree Alternative
+          </div>
+          
+          <h2 className="text-4xl sm:text-5xl font-black tracking-tight text-gray-900 leading-[1.1]">
+            Your digital home <br />
+            in a single link.
+          </h2>
+          
+          <p className="text-sm sm:text-base text-gray-600 font-medium leading-relaxed max-w-lg">
+            Instead of a boring list of URLs, ReadOnePage is a premium, minimal space where visitors can understand who you are, what you build, and how to contact you in <span className="text-[#6B60A8] font-bold">60 seconds</span>.
+          </p>
 
-        {/* Search Bar for username claiming */}
-        <div className="max-w-md">
-          <form action="/login" className="relative flex items-center">
-            <span className="absolute left-4 text-gray-400 font-semibold text-sm">readonepage.xyz/</span>
-            <input 
-              name="username" 
-              type="text" 
-              placeholder="username" 
-              required
-              className="w-full pl-[135px] pr-32 py-4 bg-white border border-[#eae8e2] text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#D2CCE9] focus:border-transparent transition shadow-sm font-semibold"
-            />
-            <button type="submit" className="absolute right-2 top-2 bottom-2 px-5 bg-[#6B60A8] text-white text-xs font-bold hover:bg-[#554C8C] transition">
-              Claim Link
-            </button>
-          </form>
+          {/* Clean Claim Box */}
+          <div className="max-w-md mx-auto md:mx-0">
+            <form action="/login" className="relative flex items-center border border-[#eae8e2] bg-white p-1.5 focus-within:ring-2 focus-within:ring-[#D2CCE9] transition">
+              <span className="pl-3 text-gray-400 font-semibold text-xs select-none">readonepage.xyz/</span>
+              <input 
+                name="username" 
+                type="text" 
+                value={claimText}
+                onChange={handleClaimChange}
+                placeholder="username" 
+                required
+                autoComplete="off"
+                className="flex-1 min-w-0 pl-1 pr-2 py-2.5 bg-transparent text-gray-900 text-xs focus:outline-none font-bold"
+              />
+              <button 
+                type="submit" 
+                className="px-5 py-2.5 bg-[#6B60A8] text-white text-xs font-bold hover:bg-[#554C8C] transition"
+              >
+                Claim Link
+              </button>
+            </form>
+          </div>
+        </div>
+
+        {/* Right Column: Live Interactive Mockup Profile */}
+        <div className="md:col-span-5 w-full">
+          <div className="label-premium text-center md:text-left">Live Interactive Preview</div>
+          
+          {/* Mockup Container */}
+          <div className="card-premium bg-white border border-[#eae8e2] p-6 shadow-sm space-y-6">
+            
+            {/* Header info */}
+            <div className="text-center">
+              <div className="w-16 h-16 bg-[#F2F0FA] border border-[#D2CCE9] mx-auto flex items-center justify-center text-xl font-bold text-[#6B60A8] shadow-sm mb-3">
+                U
+              </div>
+              <h3 className="font-extrabold text-base text-gray-900">Uday Kiran</h3>
+              <p className="text-[10px] text-[#6B60A8] font-bold">readonepage.xyz/uday</p>
+              <p className="text-xs font-serif-premium italic text-[#554C8C] mt-2 max-w-[220px] mx-auto leading-relaxed">
+                &ldquo;Building developer tools and scalable systems.&rdquo;
+              </p>
+            </div>
+
+            {/* Filter Tabs */}
+            <div className="flex flex-wrap gap-1 justify-center border-t border-b border-[#f1efea] py-2">
+              {(['all', 'links', 'projects', 'experience', 'about'] as const).map((tab) => (
+                <button
+                  key={tab}
+                  onClick={() => setActiveTab(tab)}
+                  className={`px-2 py-1 text-[9px] font-bold uppercase tracking-wider transition ${
+                    activeTab === tab 
+                      ? 'bg-[#F2F0FA] text-[#554C8C]' 
+                      : 'text-gray-400 hover:text-gray-600'
+                  }`}
+                >
+                  {tab}
+                </button>
+              ))}
+            </div>
+
+            {/* Simulated Live Sections */}
+            <div className="space-y-4 max-h-[160px] overflow-y-auto pr-1">
+              {filteredSections.map((section, idx) => (
+                <div key={idx} className="space-y-2">
+                  <span className="text-[9px] uppercase tracking-wider text-gray-400 font-extrabold block border-b border-[#eae8e2]/60 pb-0.5">
+                    {section.title}
+                  </span>
+
+                  {section.type === 'links' && (
+                    <div className="grid grid-cols-3 gap-1">
+                      {section.data.links.map((link: any, i: number) => (
+                        <a
+                          key={i}
+                          href="#"
+                          onClick={(e) => e.preventDefault()}
+                          className="px-2 py-1.5 bg-[#f7f6f3] border border-[#eae8e2] text-[9px] font-semibold text-center text-gray-700 hover:border-[#D2CCE9] hover:text-[#6B60A8] transition"
+                        >
+                          {link.label}
+                        </a>
+                      ))}
+                    </div>
+                  )}
+
+                  {section.type === 'projects' && (
+                    <div className="space-y-1.5">
+                      {section.data.projects.map((proj: any, i: number) => (
+                        <div key={i} className="p-2 border border-[#eae8e2] bg-[#f7f6f3]/30 flex justify-between items-start">
+                          <div>
+                            <span className="font-bold text-[10px] text-gray-800 block">{proj.name}</span>
+                            <span className="text-[9px] text-gray-400 block leading-tight mt-0.5">{proj.description}</span>
+                          </div>
+                          <span className={`text-[8px] font-bold px-1.5 py-0.2 bg-[#EEF3F0] text-[#557A68] uppercase`}>
+                            {proj.status}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {section.type === 'experience' && (
+                    <div className="space-y-1.5">
+                      {section.data.items.map((item: any, i: number) => (
+                        <div key={i} className="flex justify-between items-baseline text-[9px]">
+                          <span className="font-bold text-gray-700">{item.role} @ {item.company}</span>
+                          <span className="text-gray-400 font-medium">{item.duration}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {section.type === 'about' && (
+                    <p className="text-[10px] text-gray-500 leading-relaxed font-serif-premium italic">
+                      {section.data.content}
+                    </p>
+                  )}
+                </div>
+              ))}
+            </div>
+
+          </div>
         </div>
       </section>
 
-      {/* Interactive Feature Grid */}
-      <section className="mb-20">
+      {/* ─── Workflow Features Grid ──────────────────────────────── */}
+      <section className="max-w-4xl w-full mx-auto px-6 py-12 border-t border-[#eae8e2]">
         <div className="label-premium">The Workflow</div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="card-premium">
-            <div className="text-2xl mb-3">🔑</div>
-            <h3 className="font-bold text-sm text-gray-900 mb-1">One URL</h3>
+          <div className="card-premium bg-white">
+            <div className="text-xl mb-2">🔑</div>
+            <h3 className="font-bold text-xs text-gray-900 mb-1">One URL</h3>
             <p className="text-xs text-gray-500 leading-relaxed">
               LinkedIn + GitHub + Resume + Portfolio merged into one beautiful, fast, and unified link.
             </p>
           </div>
-          <div className="card-premium">
-            <div className="text-2xl mb-3">🧩</div>
-            <h3 className="font-bold text-sm text-gray-900 mb-1">Sections System</h3>
+          <div className="card-premium bg-white">
+            <div className="text-xl mb-2">🧩</div>
+            <h3 className="font-bold text-xs text-gray-900 mb-1">Sections System</h3>
             <p className="text-xs text-gray-500 leading-relaxed">
               Power your profile with modular, structured sections (Links, Projects, Experience, About) without database hassle.
             </p>
           </div>
-          <div className="card-premium">
-            <div className="text-2xl mb-3">⚡</div>
-            <h3 className="font-bold text-sm text-gray-900 mb-1">Premium & Minimal</h3>
+          <div className="card-premium bg-white">
+            <div className="text-xl mb-2">⚡</div>
+            <h3 className="font-bold text-xs text-gray-900 mb-1">Premium & Minimal</h3>
             <p className="text-xs text-gray-500 leading-relaxed">
               Designed to look high-end. Blazing fast load times. Optimized for visitors to read in 60 seconds.
             </p>
@@ -82,54 +275,19 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Visual Preview Card */}
-      <section className="mb-20">
-        <div className="label-premium">Profile Mockup — readonepage.xyz/uday</div>
-        <div className="bg-gradient-to-br from-[#F2F0FA] to-[#EEEFFE] p-8 border border-[#eae8e2] shadow-sm">
-          <div className="flex flex-col sm:flex-row items-center gap-6 text-center sm:text-left mb-6">
-            <div className="w-16 h-16 bg-[#D2CCE9] text-white font-bold text-2xl flex items-center justify-center shadow-md">
-              U
-            </div>
-            <div>
-              <h3 className="font-extrabold text-xl text-[#423B6D]">Uday Kiran</h3>
-              <p className="text-xs text-[#554C8C] font-semibold mt-0.5">@uday · Systems Engineer</p>
-              <p className="text-sm font-serif-premium italic text-[#554C8C] mt-2 max-w-md">
-                "Building developer tools and scalable systems. Passionate about API design and monorepos."
-              </p>
-            </div>
-          </div>
-          
-          {/* Section preview */}
-          <div className="space-y-3 max-w-lg">
-            <div className="bg-white/70 backdrop-blur-sm border border-[#D2CCE9]/30 p-4">
-              <div className="text-[10px] font-bold uppercase tracking-wider text-[#554C8C] mb-2">💻 What I'm Building</div>
-              <div className="flex justify-between items-center text-xs">
-                <div>
-                  <span className="font-bold text-gray-900">ReadOnePage</span>
-                  <p className="text-[10px] text-gray-500">A digital home for developers and creators</p>
-                </div>
-                <span className="px-2.5 py-0.5 bg-[#EEF3F0] text-[#557A68] font-bold text-[9px]">Shipped</span>
-              </div>
-            </div>
-            
-            <div className="bg-white/70 backdrop-blur-sm border border-[#D2CCE9]/30 p-4">
-              <div className="text-[10px] font-bold uppercase tracking-wider text-[#554C8C] mb-2">🔗 Connect</div>
-              <div className="flex gap-2">
-                <span className="px-3 py-1.5 bg-gray-100 border border-[#eae8e2] text-[10px] font-bold text-gray-700">GitHub</span>
-                <span className="px-3 py-1.5 bg-gray-100 border border-[#eae8e2] text-[10px] font-bold text-gray-700">Twitter</span>
-                <span className="px-3 py-1.5 bg-gray-100 border border-[#eae8e2] text-[10px] font-bold text-gray-700">LinkedIn</span>
-              </div>
-            </div>
-          </div>
+      {/* ─── Footer ──────────────────────────────────────────────── */}
+      <footer className="max-w-4xl w-full mx-auto px-6 py-8 border-t border-[#eae8e2] flex flex-col sm:flex-row items-center justify-between text-xs text-gray-400 gap-4">
+        <div>
+          <p className="font-serif-premium italic text-sm text-[#554C8C] mb-1">Make your internet home today.</p>
+          <p>&copy; {new Date().getFullYear()} ReadOnePage. All rights reserved.</p>
         </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="border-t border-[#eae8e2] pt-8 text-center text-xs text-gray-400">
-        <p className="font-serif-premium italic text-sm text-[#554C8C] mb-1">Make your internet home today.</p>
-        <p>&copy; {new Date().getFullYear()} ReadOnePage. All rights reserved.</p>
+        <div className="flex gap-4 font-semibold">
+          <a href="#" className="hover:underline text-gray-600">Privacy</a>
+          <a href="#" className="hover:underline text-gray-600">Terms</a>
+          <a href="#" className="hover:underline text-gray-600">Status</a>
+        </div>
       </footer>
+
     </main>
   );
 }
-
