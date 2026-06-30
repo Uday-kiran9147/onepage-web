@@ -15,7 +15,7 @@ export default function GlobalError({
   }, [error]);
 
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center px-6 py-16 bg-[#f7f6f3] text-[#2d2d2d]">
+    <main className="min-h-screen flex flex-col items-center justify-center px-4 sm:px-6 py-8 sm:py-16 bg-[#f7f6f3] text-[#2d2d2d]">
       <div className="w-full max-w-sm text-center">
         
         {/* Branding Logo */}
@@ -24,8 +24,8 @@ export default function GlobalError({
         </div>
 
         {/* Error Card */}
-        <div className="card-premium bg-white p-8 border border-[#eae8e2] shadow-sm text-center space-y-6">
-          <span className="text-3xl block">⚠️</span>
+        <div className="card-premium bg-white p-5 sm:p-8 border border-[#eae8e2] shadow-sm text-center space-y-6">
+          <svg className="w-8 h-8 mx-auto text-[#A66E58]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
           
           <div>
             <h2 className="text-lg font-bold text-gray-900 leading-tight">

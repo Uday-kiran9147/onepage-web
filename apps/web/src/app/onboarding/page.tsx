@@ -230,7 +230,7 @@ function OnboardingContent() {
   const avatarWatch = watch('avatarUrl');
 
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center px-4 py-16 bg-[#f7f6f3]">
+    <main className="min-h-screen flex flex-col items-center justify-center px-4 py-8 sm:py-16 bg-[#f7f6f3]">
       <div className="w-full max-w-xl">
         
         {/* Onboarding Header */}
@@ -242,7 +242,7 @@ function OnboardingContent() {
           <p className="text-sm text-gray-500 mt-1">Claim your public profile link and layout</p>
         </div>
 
-        <div className="card-premium bg-white p-8 shadow-sm">
+        <div className="card-premium bg-white p-4 sm:p-8 shadow-sm">
           {error && (
             <div className="mb-6 px-4 py-3 bg-[#FAF0ED] border border-[#ECD5CC] text-[#A66E58] text-sm">
               {error}
@@ -280,23 +280,25 @@ function OnboardingContent() {
               <label className="block text-xs font-bold uppercase tracking-wider text-[#999] mb-2">
                 Your Link
               </label>
-              <div className="relative flex items-center">
-                <span className="absolute left-4 text-gray-400 font-semibold text-sm">readonepage.xyz/</span>
-                <input
-                  type="text"
-                  {...register('username')}
-                  className={`w-full pl-[135px] pr-10 py-3.5 bg-[#f1efea] border ${
-                    errors.username || usernameStatus === 'taken' || usernameStatus === 'invalid'
-                      ? 'border-[#ECD5CC] focus:ring-[#ECD5CC]' 
-                      : usernameStatus === 'available'
-                      ? 'border-[#D5E0DA] focus:ring-[#557A68]'
-                      : 'border-[#eae8e2] focus:ring-[#D2CCE9]'
-                  } text-gray-900 text-sm font-bold focus:outline-none focus:ring-2 focus:border-transparent transition`}
-                />
-                <div className="absolute right-4 flex items-center justify-center">
-                  {usernameStatus === 'checking' && <div className="w-4 h-4 border-2 border-gray-300 border-t-[#6B60A8] animate-spin"></div>}
-                  {usernameStatus === 'available' && <span className="text-[#557A68] font-bold">✓</span>}
-                  {(usernameStatus === 'taken' || usernameStatus === 'invalid') && <span className="text-[#A66E58] font-bold">✕</span>}
+              <div className="relative">
+                <div className="flex items-center bg-[#f1efea] border border-[#eae8e2] focus-within:ring-2 focus-within:ring-[#D2CCE9] focus-within:border-transparent transition">
+                  <span className="pl-3 sm:pl-4 text-gray-400 font-semibold text-xs sm:text-sm whitespace-nowrap select-none">readonepage.xyz/</span>
+                  <input
+                    type="text"
+                    {...register('username')}
+                    className={`flex-1 min-w-0 pr-10 py-3 sm:py-3.5 bg-transparent ${
+                      errors.username || usernameStatus === 'taken' || usernameStatus === 'invalid'
+                        ? 'text-[#A66E58]' 
+                        : usernameStatus === 'available'
+                        ? 'text-[#557A68]'
+                        : 'text-gray-900'
+                    } text-sm font-bold focus:outline-none`}
+                  />
+                  <div className="absolute right-4 flex items-center justify-center">
+                    {usernameStatus === 'checking' && <div className="w-4 h-4 border-2 border-gray-300 border-t-[#6B60A8] animate-spin"></div>}
+                    {usernameStatus === 'available' && <span className="text-[#557A68] font-bold">✓</span>}
+                    {(usernameStatus === 'taken' || usernameStatus === 'invalid') && <span className="text-[#A66E58] font-bold">✕</span>}
+                  </div>
                 </div>
               </div>
               {errors.username && (

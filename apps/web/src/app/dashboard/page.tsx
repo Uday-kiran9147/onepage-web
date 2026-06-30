@@ -325,13 +325,13 @@ export default function DashboardPage() {
   if (!user) return null;
 
   return (
-    <main className="min-h-screen px-4 py-12 bg-[#f7f6f3]">
+    <main className="min-h-screen px-3 sm:px-4 py-6 sm:py-12 bg-[#f7f6f3]">
       <div className="max-w-2xl mx-auto">
         
         {/* Header */}
-        <div className="flex items-center justify-between mb-8 border-b border-[#eae8e2] pb-6">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8 border-b border-[#eae8e2] pb-6">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 border border-[#eae8e2] bg-white flex items-center justify-center overflow-hidden shadow-sm">
+            <div className="w-10 h-10 border border-[#eae8e2] bg-white flex items-center justify-center overflow-hidden shadow-sm flex-shrink-0">
               <img src="/logo.png" alt="ReadOnePage Logo" className="w-full h-full object-cover" />
             </div>
             <div>
@@ -339,17 +339,17 @@ export default function DashboardPage() {
               <span className="text-[10px] text-gray-400">Dashboard</span>
             </div>
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-2 w-full sm:w-auto">
             <Link
               href={`/${user.username}`}
               target="_blank"
-              className="px-4 py-2 bg-[#6B60A8] hover:bg-[#554C8C] text-white text-xs font-bold transition shadow-sm"
+              className="flex-1 sm:flex-initial text-center px-4 py-2.5 bg-[#6B60A8] hover:bg-[#554C8C] text-white text-xs font-bold transition shadow-sm"
             >
               Public Profile ↗
             </Link>
             <button
               onClick={handleLogout}
-              className="px-4 py-2 border border-[#eae8e2] bg-white text-gray-700 text-xs font-bold hover:bg-gray-50 transition shadow-sm"
+              className="flex-1 sm:flex-initial px-4 py-2.5 border border-[#eae8e2] bg-white text-gray-700 text-xs font-bold hover:bg-gray-50 transition shadow-sm"
             >
               Logout
             </button>
@@ -372,20 +372,20 @@ export default function DashboardPage() {
         <div className="label-premium">Profile Header</div>
         <div className="card-premium mb-8 bg-white">
           {!isEditingProfile ? (
-            <div className="flex items-start justify-between gap-4">
-              <div className="flex items-center gap-4">
-                <div className="w-14 h-14 bg-gray-100 border border-[#eae8e2] flex items-center justify-center overflow-hidden shadow-inner">
+            <div className="flex items-start justify-between gap-3">
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gray-100 border border-[#eae8e2] flex items-center justify-center overflow-hidden shadow-inner flex-shrink-0">
                   {user.avatarUrl ? (
                     <img src={user.avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
                   ) : (
-                    <span className="text-xl">👤</span>
+                    <svg className="w-6 h-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
                   )}
                 </div>
-                <div>
-                  <h3 className="font-bold text-base text-gray-900">{user.name}</h3>
+                <div className="min-w-0">
+                  <h3 className="font-bold text-sm sm:text-base text-gray-900 truncate">{user.name}</h3>
                   <p className="text-xs text-[#6B60A8] font-semibold">@{user.username}</p>
                   {user.bio ? (
-                    <p className="text-xs text-gray-500 mt-1 max-w-md">{user.bio}</p>
+                    <p className="text-xs text-gray-500 mt-1 line-clamp-2">{user.bio}</p>
                   ) : (
                     <p className="text-xs text-gray-400 mt-1 italic">No bio defined yet.</p>
                   )}
@@ -393,7 +393,7 @@ export default function DashboardPage() {
               </div>
               <button
                 onClick={() => setIsEditingProfile(true)}
-                className="text-xs font-bold text-[#6B60A8] hover:underline"
+                className="text-xs font-bold text-[#6B60A8] hover:underline flex-shrink-0"
               >
                 Edit
               </button>
@@ -562,9 +562,9 @@ export default function DashboardPage() {
               
               return (
                 <div key={section.id} className="card-premium bg-white">
-                  <div className="flex items-center justify-between gap-4 mb-2">
-                    <div className="flex items-center gap-2">
-                      <span className="w-5 h-5 inline-flex items-center justify-center">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4 mb-2">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <span className="w-5 h-5 inline-flex items-center justify-center flex-shrink-0">
                         {section.type === 'links' && (
                           <svg className="w-5 h-5 text-[#554C8C]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" /></svg>
                         )}
@@ -587,12 +587,12 @@ export default function DashboardPage() {
                           required
                           value={editSecTitle}
                           onChange={(e) => setEditSecTitle(e.target.value)}
-                          className="px-2 py-0.5 border border-[#eae8e2] rounded-none font-bold text-sm text-gray-900 focus:outline-none"
+                          className="px-2 py-0.5 border border-[#eae8e2] rounded-none font-bold text-xs sm:text-sm text-gray-900 focus:outline-none min-w-0 flex-1"
                         />
                       ) : (
-                        <span className="font-bold text-sm text-gray-900">{section.title}</span>
+                        <span className="font-bold text-xs sm:text-sm text-gray-900 truncate">{section.title}</span>
                       )}
-                      <span className="text-[9px] uppercase tracking-widest px-2 py-0.5 bg-gray-100 text-gray-400 font-bold">
+                      <span className="text-[8px] sm:text-[9px] uppercase tracking-widest px-1.5 sm:px-2 py-0.5 bg-gray-100 text-gray-400 font-bold flex-shrink-0 hidden sm:inline">
                         {section.type}
                       </span>
                     </div>
@@ -789,25 +789,25 @@ export default function DashboardPage() {
                         {section.type === 'links' && (
                           <div className="space-y-3">
                             {editSecData.links?.map((link: any, linkIdx: number) => (
-                              <div key={linkIdx} className="flex items-center gap-2 bg-[#f1efea] p-3 border border-[#eae8e2]/60">
+                              <div key={linkIdx} className="flex flex-col sm:flex-row sm:items-center gap-2 bg-[#f1efea] p-3 border border-[#eae8e2]/60">
                                 <input
                                   type="text"
                                   placeholder="Label (e.g. Portfolio)"
                                   value={link.label}
                                   onChange={(e) => updateLinkItem(linkIdx, 'label', e.target.value)}
-                                  className="w-1/3 px-2 py-1 text-xs border border-[#eae8e2] focus:outline-none"
+                                  className="w-full sm:w-1/3 px-2 py-2 sm:py-1 text-xs border border-[#eae8e2] focus:outline-none"
                                 />
                                 <input
                                   type="text"
                                   placeholder="URL (https://...)"
                                   value={link.url}
                                   onChange={(e) => updateLinkItem(linkIdx, 'url', e.target.value)}
-                                  className="flex-1 px-2 py-1 text-xs border border-[#eae8e2] focus:outline-none"
+                                  className="flex-1 px-2 py-2 sm:py-1 text-xs border border-[#eae8e2] focus:outline-none"
                                 />
                                 <button
                                   type="button"
                                   onClick={() => deleteLinkItem(linkIdx)}
-                                  className="text-xs font-bold text-[#A66E58] hover:underline px-1"
+                                  className="text-xs font-bold text-[#A66E58] hover:underline px-1 self-end sm:self-auto"
                                 >
                                   ✕
                                 </button>
@@ -835,20 +835,20 @@ export default function DashboardPage() {
                                 >
                                   ✕ Remove
                                 </button>
-                                <div className="grid grid-cols-2 gap-2">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                                   <input
                                     type="text"
                                     placeholder="Project Name"
                                     value={proj.name}
                                     onChange={(e) => updateProjectItem(projIdx, 'name', e.target.value)}
-                                    className="px-2 py-1 text-xs border border-[#eae8e2] focus:outline-none"
+                                    className="px-2 py-2 sm:py-1 text-xs border border-[#eae8e2] focus:outline-none"
                                   />
                                   <input
                                     type="text"
                                     placeholder="Link URL"
                                     value={proj.url}
                                     onChange={(e) => updateProjectItem(projIdx, 'url', e.target.value)}
-                                    className="px-2 py-1 text-xs border border-[#eae8e2] focus:outline-none"
+                                    className="px-2 py-2 sm:py-1 text-xs border border-[#eae8e2] focus:outline-none"
                                   />
                                 </div>
                                 <input
@@ -858,22 +858,22 @@ export default function DashboardPage() {
                                   onChange={(e) => updateProjectItem(projIdx, 'description', e.target.value)}
                                   className="w-full px-2 py-1 text-xs border border-[#eae8e2] focus:outline-none"
                                 />
-                                <div className="grid grid-cols-2 gap-2">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                                   <input
                                     type="text"
                                     placeholder="Tags (comma-separated, e.g. React, Next.js)"
                                     value={proj.tags?.join(', ') || ''}
                                     onChange={(e) => updateProjectItem(projIdx, 'tags', e.target.value.split(',').map((t: string) => t.trim()))}
-                                    className="px-2 py-1 text-xs border border-[#eae8e2] focus:outline-none"
+                                    className="px-2 py-2 sm:py-1 text-xs border border-[#eae8e2] focus:outline-none"
                                   />
                                   <select
                                     value={proj.status}
                                     onChange={(e) => updateProjectItem(projIdx, 'status', e.target.value)}
-                                    className="px-2 py-1 text-xs border border-[#eae8e2] focus:outline-none bg-white"
+                                    className="px-2 py-2 sm:py-1 text-xs border border-[#eae8e2] focus:outline-none bg-white"
                                   >
-                                    <option value="in-progress">🏗️ In Progress</option>
-                                    <option value="shipped">🚀 Shipped</option>
-                                    <option value="archived">📦 Archived</option>
+                                    <option value="in-progress">In Progress</option>
+                                    <option value="shipped">Shipped</option>
+                                    <option value="archived">Archived</option>
                                   </select>
                                 </div>
                               </div>
@@ -900,27 +900,27 @@ export default function DashboardPage() {
                                 >
                                   ✕ Remove
                                 </button>
-                                <div className="grid grid-cols-3 gap-2">
+                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                                   <input
                                     type="text"
                                     placeholder="Role (e.g. Designer)"
                                     value={item.role}
                                     onChange={(e) => updateExperienceItem(itemIdx, 'role', e.target.value)}
-                                    className="col-span-1 px-2 py-1 text-xs border border-[#eae8e2] focus:outline-none"
+                                    className="px-2 py-2 sm:py-1 text-xs border border-[#eae8e2] focus:outline-none"
                                   />
                                   <input
                                     type="text"
                                     placeholder="Company / School"
                                     value={item.company}
                                     onChange={(e) => updateExperienceItem(itemIdx, 'company', e.target.value)}
-                                    className="col-span-1 px-2 py-1 text-xs border border-[#eae8e2] focus:outline-none"
+                                    className="px-2 py-2 sm:py-1 text-xs border border-[#eae8e2] focus:outline-none"
                                   />
                                   <input
                                     type="text"
                                     placeholder="Duration (e.g. 2021 - 2023)"
                                     value={item.duration}
                                     onChange={(e) => updateExperienceItem(itemIdx, 'duration', e.target.value)}
-                                    className="col-span-1 px-2 py-1 text-xs border border-[#eae8e2] focus:outline-none"
+                                    className="px-2 py-2 sm:py-1 text-xs border border-[#eae8e2] focus:outline-none"
                                   />
                                 </div>
                                 <textarea

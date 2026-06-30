@@ -63,16 +63,30 @@ body {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.01);
 }
 
-.card-premium:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(107, 96, 168, 0.03);
-  border-color: var(--purple-border);
+@media (min-width: 640px) {
+  .card-premium:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(107, 96, 168, 0.03);
+    border-color: var(--purple-border);
+  }
+}
+
+@media (max-width: 639px) {
+  .card-premium {
+    padding: 1rem;
+  }
 }
 
 .highlight-premium {
   background: var(--purple-bg);
   border: 1px solid var(--purple-border);
   padding: 1.5rem;
+}
+
+@media (max-width: 639px) {
+  .highlight-premium {
+    padding: 1rem;
+  }
 }
 
 .font-serif-premium {

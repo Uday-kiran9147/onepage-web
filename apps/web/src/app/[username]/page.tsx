@@ -118,7 +118,7 @@ export default async function ProfilePage({
   if (!profile) notFound();
 
   return (
-    <main className="min-h-screen flex flex-col items-center justify-between px-6 py-16 bg-[#f7f6f3]">
+    <main className="min-h-screen flex flex-col items-center justify-between px-4 sm:px-6 py-10 sm:py-16 bg-[#f7f6f3]">
       <div className="w-full max-w-xl flex-1">
         
         {/* Profile Header */}
@@ -244,11 +244,11 @@ export default async function ProfilePage({
                         {/* Timeline point */}
                         <div className="absolute -left-[31px] top-1.5 w-3 h-3 bg-[#6B60A8] border-2 border-white shadow-sm" />
                         
-                        <div className="flex justify-between items-baseline mb-1">
+                        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-baseline gap-1 mb-1">
                           <h4 className="font-extrabold text-sm text-gray-900">
                             {item.role} <span className="font-normal text-gray-400">at</span> {item.company}
                           </h4>
-                          <span className="text-[10px] text-gray-400 font-bold bg-[#f1efea] px-2 py-0.5 border border-[#eae8e2]">
+                          <span className="text-[10px] text-gray-400 font-bold bg-[#f1efea] px-2 py-0.5 border border-[#eae8e2] self-start sm:self-auto flex-shrink-0">
                             {item.duration}
                           </span>
                         </div>

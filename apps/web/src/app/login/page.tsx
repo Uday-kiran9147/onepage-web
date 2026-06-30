@@ -68,7 +68,7 @@ function LoginContent() {
           </div>
         </div>
 
-        <div className="card-premium text-center py-10 px-8 bg-white">
+        <div className="card-premium text-center py-8 sm:py-10 px-5 sm:px-8 bg-white">
           <h2 className="text-xl font-bold text-gray-900 mb-2">Claim your link</h2>
           <p className="text-sm text-gray-500 mb-8 leading-relaxed">
             {claimedUsername ? (

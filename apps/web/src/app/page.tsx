@@ -88,7 +88,7 @@ export default function LandingPage() {
     <main className="min-h-screen bg-[#f7f6f3] text-[#2d2d2d] flex flex-col justify-between">
       
       {/* ─── Navigation Header ───────────────────────────────────── */}
-      <header className="max-w-4xl w-full mx-auto px-6 py-6 flex items-center justify-between border-b border-[#eae8e2]">
+      <header className="max-w-4xl w-full mx-auto px-4 sm:px-6 py-6 flex items-center justify-between border-b border-[#eae8e2]">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 border border-[#eae8e2] bg-white flex items-center justify-center overflow-hidden shadow-sm">
             <img src="/logo.png" alt="ReadOnePage Logo" className="w-full h-full object-cover" />
@@ -107,7 +107,7 @@ export default function LandingPage() {
       </header>
 
       {/* ─── Hero Section ────────────────────────────────────────── */}
-      <section className="max-w-4xl w-full mx-auto px-6 pt-16 pb-12 grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
+      <section className="max-w-4xl w-full mx-auto px-4 sm:px-6 pt-10 sm:pt-16 pb-8 sm:pb-12 grid grid-cols-1 md:grid-cols-12 gap-6 sm:gap-12 items-center">
         
         {/* Left Column: Title & Claim */}
         <div className="md:col-span-7 space-y-6 text-center md:text-left">
@@ -115,7 +115,7 @@ export default function LandingPage() {
             ✨ The Minimalist Linktree Alternative
           </div>
           
-          <h2 className="text-4xl sm:text-5xl font-black tracking-tight text-gray-900 leading-[1.1]">
+          <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-gray-900 leading-[1.1]">
             Your digital home <br />
             in a single link.
           </h2>
@@ -126,21 +126,23 @@ export default function LandingPage() {
 
           {/* Clean Claim Box */}
           <div className="max-w-md mx-auto md:mx-0">
-            <form action="/login" className="relative flex items-center border border-[#eae8e2] bg-white p-1.5 focus-within:ring-2 focus-within:ring-[#D2CCE9] transition">
-              <span className="pl-3 text-gray-400 font-semibold text-xs select-none">readonepage.xyz/</span>
-              <input 
-                name="username" 
-                type="text" 
-                value={claimText}
-                onChange={handleClaimChange}
-                placeholder="username" 
-                required
-                autoComplete="off"
-                className="flex-1 min-w-0 pl-1 pr-2 py-2.5 bg-transparent text-gray-900 text-xs focus:outline-none font-bold"
-              />
+            <form action="/login" className="relative flex flex-col sm:flex-row sm:items-center border border-[#eae8e2] bg-white p-1.5 focus-within:ring-2 focus-within:ring-[#D2CCE9] transition">
+              <div className="flex items-center flex-1 min-w-0">
+                <span className="pl-3 text-gray-400 font-semibold text-xs select-none whitespace-nowrap">readonepage.xyz/</span>
+                <input 
+                  name="username" 
+                  type="text" 
+                  value={claimText}
+                  onChange={handleClaimChange}
+                  placeholder="username" 
+                  required
+                  autoComplete="off"
+                  className="flex-1 min-w-0 pl-1 pr-2 py-2.5 bg-transparent text-gray-900 text-xs focus:outline-none font-bold"
+                />
+              </div>
               <button 
                 type="submit" 
-                className="px-5 py-2.5 bg-[#6B60A8] text-white text-xs font-bold hover:bg-[#554C8C] transition"
+                className="w-full sm:w-auto px-5 py-2.5 bg-[#6B60A8] text-white text-xs font-bold hover:bg-[#554C8C] transition"
               >
                 Claim Link
               </button>
@@ -248,7 +250,7 @@ export default function LandingPage() {
       </section>
 
       {/* ─── Workflow Features Grid ──────────────────────────────── */}
-      <section className="max-w-4xl w-full mx-auto px-6 py-12 border-t border-[#eae8e2]">
+      <section className="max-w-4xl w-full mx-auto px-4 sm:px-6 py-12 border-t border-[#eae8e2]">
         <div className="label-premium">The Workflow</div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="card-premium bg-white">
@@ -282,7 +284,7 @@ export default function LandingPage() {
       </section>
 
       {/* ─── Footer ──────────────────────────────────────────────── */}
-      <footer className="max-w-4xl w-full mx-auto px-6 py-8 border-t border-[#eae8e2] flex flex-col sm:flex-row items-center justify-between text-xs text-gray-400 gap-4">
+      <footer className="max-w-4xl w-full mx-auto px-4 sm:px-6 py-8 border-t border-[#eae8e2] flex flex-col sm:flex-row items-center justify-between text-xs text-gray-400 gap-4">
         <div>
           <p className="font-serif-premium italic text-sm text-[#554C8C] mb-1">Make your internet home today.</p>
           <p>&copy; {new Date().getFullYear()} ReadOnePage. All rights reserved.</p>

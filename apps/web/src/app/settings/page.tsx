@@ -180,7 +180,7 @@ export default function SettingsPage() {
   }
 
   return (
-    <main className="min-h-screen px-4 py-12 bg-[#f7f6f3]">
+    <main className="min-h-screen px-3 sm:px-4 py-6 sm:py-12 bg-[#f7f6f3]">
       <div className="max-w-2xl mx-auto">
         
         {/* Header */}
@@ -216,15 +216,15 @@ export default function SettingsPage() {
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             
             {/* Avatar URL & Preview */}
-            <div className="flex items-center gap-4 pb-2 border-b border-[#eae8e2]/50">
-              <div className="w-16 h-16 bg-gray-100 border border-[#eae8e2] flex items-center justify-center overflow-hidden shadow-inner">
+            <div className="flex flex-col sm:flex-row items-center gap-4 pb-2 border-b border-[#eae8e2]/50">
+              <div className="w-16 h-16 bg-gray-100 border border-[#eae8e2] flex items-center justify-center overflow-hidden shadow-inner flex-shrink-0">
                 {avatarWatch ? (
                   <img src={avatarWatch} alt="Avatar" className="w-full h-full object-cover" />
                 ) : (
-                  <span className="text-xl">👤</span>
+                  <svg className="w-6 h-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
                 )}
               </div>
-              <div className="flex-1">
+              <div className="flex-1 w-full">
                 <label className="block text-xs font-bold uppercase tracking-wider text-[#999] mb-1.5">
                   Avatar Image URL
                 </label>
@@ -242,23 +242,25 @@ export default function SettingsPage() {
               <label className="block text-xs font-bold uppercase tracking-wider text-[#999] mb-2">
                 Your Link
               </label>
-              <div className="relative flex items-center">
-                <span className="absolute left-4 text-gray-400 font-semibold text-sm">readonepage.xyz/</span>
-                <input
-                  type="text"
-                  {...register('username')}
-                  className={`w-full pl-[135px] pr-10 py-3.5 bg-[#f1efea] border ${
-                    errors.username || usernameStatus === 'taken' || usernameStatus === 'invalid'
-                      ? 'border-[#ECD5CC] focus:ring-[#ECD5CC]' 
-                      : usernameStatus === 'available'
-                      ? 'border-[#D5E0DA] focus:ring-[#557A68]'
-                      : 'border-[#eae8e2] focus:ring-[#D2CCE9]'
-                  } text-gray-900 text-sm font-bold focus:outline-none focus:ring-2 focus:border-transparent transition`}
-                />
-                <div className="absolute right-4 flex items-center justify-center">
-                  {usernameStatus === 'checking' && <div className="w-4 h-4 border-2 border-gray-300 border-t-[#6B60A8] animate-spin"></div>}
-                  {usernameStatus === 'available' && <span className="text-[#557A68] font-bold">✓</span>}
-                  {(usernameStatus === 'taken' || usernameStatus === 'invalid') && <span className="text-[#A66E58] font-bold">✕</span>}
+              <div className="relative">
+                <div className="flex items-center bg-[#f1efea] border border-[#eae8e2] focus-within:ring-2 focus-within:ring-[#D2CCE9] focus-within:border-transparent transition">
+                  <span className="pl-3 sm:pl-4 text-gray-400 font-semibold text-xs sm:text-sm whitespace-nowrap select-none">readonepage.xyz/</span>
+                  <input
+                    type="text"
+                    {...register('username')}
+                    className={`flex-1 min-w-0 pr-10 py-3 sm:py-3.5 bg-transparent ${
+                      errors.username || usernameStatus === 'taken' || usernameStatus === 'invalid'
+                        ? 'text-[#A66E58]' 
+                        : usernameStatus === 'available'
+                        ? 'text-[#557A68]'
+                        : 'text-gray-900'
+                    } text-sm font-bold focus:outline-none`}
+                  />
+                  <div className="absolute right-4 flex items-center justify-center">
+                    {usernameStatus === 'checking' && <div className="w-4 h-4 border-2 border-gray-300 border-t-[#6B60A8] animate-spin"></div>}
+                    {usernameStatus === 'available' && <span className="text-[#557A68] font-bold">✓</span>}
+                    {(usernameStatus === 'taken' || usernameStatus === 'invalid') && <span className="text-[#A66E58] font-bold">✕</span>}
+                  </div>
                 </div>
               </div>
               {errors.username && (
