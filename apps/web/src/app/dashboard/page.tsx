@@ -54,6 +54,7 @@ export default function DashboardPage() {
   const [isAddingSection, setIsAddingSection] = useState(false);
   const [newSecType, setNewSecType] = useState<'links' | 'projects' | 'experience' | 'about' | 'skills'>('links');
   const [newSecTitle, setNewSecTitle] = useState('');
+  const [typeDropdownOpen, setTypeDropdownOpen] = useState(false);
 
   // Active section editing
   const [editingSectionId, setEditingSectionId] = useState<string | null>(null);
@@ -471,17 +472,44 @@ export default function DashboardPage() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-[10px] font-bold text-[#6B60A8] uppercase tracking-wider mb-1.5">Section Type</label>
-                  <select
-                    value={newSecType}
-                    onChange={(e) => setNewSecType(e.target.value as any)}
-                    className="w-full px-3.5 py-2.5 text-xs bg-white border border-[#eae8e2] focus:outline-none"
-                  >
-                    <option value="links">🔗 Social Links</option>
-                    <option value="projects">💻 Projects</option>
-                    <option value="experience">💼 Work Experience</option>
-                    <option value="about">📝 Rich Text / About</option>
-                    <option value="skills">🛠️ Skills / Tech Stack</option>
-                  </select>
+                  {(() => {
+                    const typeOptions: { value: 'links' | 'projects' | 'experience' | 'about' | 'skills'; label: string; icon: React.ReactNode }[] = [
+                      { value: 'links', label: 'Social Links', icon: <svg className="w-4 h-4 text-[#554C8C]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" /></svg> },
+                      { value: 'projects', label: 'Projects', icon: <svg className="w-4 h-4 text-[#557A68]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg> },
+                      { value: 'experience', label: 'Work Experience', icon: <svg className="w-4 h-4 text-[#9C7F59]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m8 0H8m8 0h2a2 2 0 012 2v6a2 2 0 01-2 2H6a2 2 0 01-2-2V8a2 2 0 012-2h2" /></svg> },
+                      { value: 'about', label: 'Rich Text / About', icon: <svg className="w-4 h-4 text-[#A66E58]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h12M4 18h8" /></svg> },
+                      { value: 'skills', label: 'Skills / Tech Stack', icon: <svg className="w-4 h-4 text-[#554C8C]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg> },
+                    ];
+                    const selected = typeOptions.find(o => o.value === newSecType) || typeOptions[0];
+                    return (
+                      <div className="relative">
+                        <button
+                          type="button"
+                          onClick={() => setTypeDropdownOpen(!typeDropdownOpen)}
+                          className="w-full flex items-center gap-2.5 px-3.5 py-2.5 text-xs bg-white border border-[#eae8e2] focus:outline-none text-left font-semibold text-gray-900"
+                        >
+                          {selected.icon}
+                          <span className="flex-1">{selected.label}</span>
+                          <svg className="w-3.5 h-3.5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
+                        </button>
+                        {typeDropdownOpen && (
+                          <div className="absolute z-20 mt-1 w-full bg-white border border-[#eae8e2] shadow-md">
+                            {typeOptions.map((opt) => (
+                              <button
+                                key={opt.value}
+                                type="button"
+                                onClick={() => { setNewSecType(opt.value); setTypeDropdownOpen(false); }}
+                                className={`w-full flex items-center gap-2.5 px-3.5 py-2.5 text-xs text-left font-semibold transition hover:bg-[#F2F0FA] ${newSecType === opt.value ? 'bg-[#F2F0FA] text-[#554C8C]' : 'text-gray-700'}`}
+                              >
+                                {opt.icon}
+                                {opt.label}
+                              </button>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })()}
                 </div>
                 <div>
                   <label className="block text-[10px] font-bold text-[#6B60A8] uppercase tracking-wider mb-1.5">Section Title</label>
@@ -517,7 +545,7 @@ export default function DashboardPage() {
         {/* Section List (Ordered) */}
         {sections.length === 0 ? (
           <div className="card-premium text-center py-12 bg-white">
-            <span className="text-3xl">🏠</span>
+            <svg className="w-8 h-8 mx-auto text-[#554C8C]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12l8.954-8.955a1.126 1.126 0 011.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" /></svg>
             <p className="text-sm font-bold text-gray-600 mt-3 mb-1">Your home has no sections yet.</p>
             <p className="text-xs text-gray-400 mb-4">Add sections to list links, experience, or products.</p>
             <button
@@ -536,12 +564,22 @@ export default function DashboardPage() {
                 <div key={section.id} className="card-premium bg-white">
                   <div className="flex items-center justify-between gap-4 mb-2">
                     <div className="flex items-center gap-2">
-                      <span className="text-sm">
-                        {section.type === 'links' && '🔗'}
-                        {section.type === 'projects' && '💻'}
-                        {section.type === 'experience' && '💼'}
-                        {section.type === 'about' && '📝'}
-                        {section.type === 'skills' && '🛠️'}
+                      <span className="w-5 h-5 inline-flex items-center justify-center">
+                        {section.type === 'links' && (
+                          <svg className="w-5 h-5 text-[#554C8C]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" /></svg>
+                        )}
+                        {section.type === 'projects' && (
+                          <svg className="w-5 h-5 text-[#557A68]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
+                        )}
+                        {section.type === 'experience' && (
+                          <svg className="w-5 h-5 text-[#9C7F59]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m8 0H8m8 0h2a2 2 0 012 2v6a2 2 0 01-2 2H6a2 2 0 01-2-2V8a2 2 0 012-2h2" /></svg>
+                        )}
+                        {section.type === 'about' && (
+                          <svg className="w-5 h-5 text-[#A66E58]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h12M4 18h8" /></svg>
+                        )}
+                        {section.type === 'skills' && (
+                          <svg className="w-5 h-5 text-[#554C8C]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                        )}
                       </span>
                       {isEditing ? (
                         <input
