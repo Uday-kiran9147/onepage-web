@@ -1,67 +1,83 @@
 import { z } from 'zod';
 
-// ─── Category Enum ───────────────────────────────────────────────
-export const CategoryEnum = z.enum(['habit', 'attitude', 'personality']);
-export type Category = z.infer<typeof CategoryEnum>;
-
 // ─── User Schema ─────────────────────────────────────────────────
 export const UserSchema = z.object({
-  _id: z.string(),
-  googleId: z.string(),
-  email: z.string().email(),
-  name: z.string().min(1),
-  username: z.string().min(1).regex(/^[a-z0-9_-]+$/, 'Username must be lowercase alphanumeric'),
-  bio: z.string().default(''),
-  isPro: z.boolean().default(false),
+  id: z.string(),
+  username: z.string().min(3).regex(/^[a-z0-9_-]+$/, 'Username must be lowercase alphanumeric, dashes, or underscores'),
+  name: z.string().min(1, 'Name is required'),
+  bio: z.string().max(300, 'Bio must be under 300 characters').default(''),
+  avatarUrl: z.string().url('Avatar must be a valid URL').or(z.literal('')).default(''),
   isOnboarded: z.boolean().default(false),
   createdAt: z.coerce.date(),
 });
 export type User = z.infer<typeof UserSchema>;
 
 export const ProfileUpdateSchema = z.object({
-  username: z.string().min(3).regex(/^[a-z0-9_-]+$/, 'Username must be lowercase alphanumeric and at least 3 characters').optional(),
-  name: z.string().min(1).optional(),
-  bio: z.string().max(160).optional(),
+  username: z.string()
+    .min(3, 'Username must be at least 3 characters')
+    .max(30, 'Username must be under 30 characters')
+    .regex(/^[a-z0-9_-]+$/, 'Username must be lowercase alphanumeric, dashes, or underscores')
+    .optional(),
+  name: z.string().min(1, 'Name is required').optional(),
+  bio: z.string().max(300, 'Bio must be under 300 characters').optional(),
+  avatarUrl: z.string().url('Avatar must be a valid URL').or(z.literal('')).optional(),
 });
 export type ProfileUpdate = z.infer<typeof ProfileUpdateSchema>;
 
+// ─── Section Item Schemas ────────────────────────────────────────
 
-// ─── Feedback Answer Schema ──────────────────────────────────────
-export const FeedbackAnswerSchema = z.object({
-  category: CategoryEnum,
-  prompt: z.string().min(1),
-  text: z.string().min(50, 'Each answer must be at least 50 characters'),
+export const LinkItemSchema = z.object({
+  label: z.string().min(1, 'Label is required'),
+  url: z.string().url('URL must be valid'),
+  icon: z.string().default('link'),
 });
-export type FeedbackAnswer = z.infer<typeof FeedbackAnswerSchema>;
+export type LinkItem = z.infer<typeof LinkItemSchema>;
 
-// ─── Feedback Submit Schema ──────────────────────────────────────
-// Exactly 3 answers required — one per category
-export const FeedbackSubmitSchema = z.object({
-  answers: z.array(FeedbackAnswerSchema).length(3),
+export const ProjectItemSchema = z.object({
+  name: z.string().min(1, 'Project name is required'),
+  description: z.string().default(''),
+  url: z.string().url('URL must be valid').or(z.literal('')).default(''),
+  tags: z.array(z.string()).default([]),
+  status: z.enum(['in-progress', 'shipped', 'archived']).default('shipped'),
 });
-export type FeedbackSubmit = z.infer<typeof FeedbackSubmitSchema>;
+export type ProjectItem = z.infer<typeof ProjectItemSchema>;
 
-// ─── Pattern Schema ──────────────────────────────────────────────
-export const PatternSchema = z.object({
-  _id: z.string(),
-  profileId: z.string(),
-  category: CategoryEnum,
-  summary: z.string(),
-  count: z.number().int().min(0),
-  feedbackIds: z.array(z.string()),
-  generatedAt: z.coerce.date(),
+export const ExperienceItemSchema = z.object({
+  role: z.string().min(1, 'Role is required'),
+  company: z.string().min(1, 'Company is required'),
+  duration: z.string().min(1, 'Duration is required'),
+  description: z.string().default(''),
 });
-export type Pattern = z.infer<typeof PatternSchema>;
+export type ExperienceItem = z.infer<typeof ExperienceItemSchema>;
 
-// ─── Feedback Full Schema (for API responses) ────────────────────
-export const FeedbackSchema = z.object({
-  _id: z.string(),
-  profileId: z.string(),
-  answers: z.array(FeedbackAnswerSchema),
-  ipHash: z.string(),
-  isHidden: z.boolean().default(false),
-  isReported: z.boolean().default(false),
-  isModerated: z.boolean().default(false),
+// ─── Section Schema ──────────────────────────────────────────────
+
+export const SectionTypeEnum = z.enum(['links', 'projects', 'experience', 'about']);
+export type SectionType = z.infer<typeof SectionTypeEnum>;
+
+export const SectionSchema = z.object({
+  id: z.string(),
+  type: SectionTypeEnum,
+  title: z.string().min(1, 'Section title is required'),
+  data: z.record(z.any()), // Raw JSON data for flexibility (validated client-side/server-side per type)
+  order: z.number().int(),
   createdAt: z.coerce.date(),
 });
-export type Feedback = z.infer<typeof FeedbackSchema>;
+export type Section = z.infer<typeof SectionSchema>;
+
+// Section validation helpers
+export const LinksSectionDataSchema = z.object({
+  links: z.array(LinkItemSchema),
+});
+
+export const ProjectsSectionDataSchema = z.object({
+  projects: z.array(ProjectItemSchema),
+});
+
+export const ExperienceSectionDataSchema = z.object({
+  items: z.array(ExperienceItemSchema),
+});
+
+export const AboutSectionDataSchema = z.object({
+  content: z.string().max(2000, 'Content must be under 2000 characters'),
+});

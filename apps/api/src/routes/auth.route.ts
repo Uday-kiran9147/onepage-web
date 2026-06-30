@@ -3,7 +3,7 @@ import { AuthController } from '../controllers/AuthController';
 import { asyncHandler } from '../middleware/asyncHandler';
 import { authenticate } from '../middleware/authenticate';
 
-const router = Router();
+const router: Router = Router();
 
 // POST /api/auth/google — OAuth callback, set httpOnly JWT cookie
 router.post('/google', asyncHandler(AuthController.googleLogin));

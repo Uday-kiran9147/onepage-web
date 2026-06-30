@@ -2,9 +2,9 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Mirror — Anonymous Personal Growth Feedback',
+  title: 'ReadOnePage — Your Digital Home on the Internet',
   description:
-    'Get honest, anonymous feedback from people in your circle. See patterns in your habits, attitude, and personality. Real growth starts with real feedback.',
+    'Create a premium, minimal, and fast single-page digital home. Show who you are, what you build, and how to contact you in 60 seconds.',
 };
 
 export default function RootLayout({
@@ -20,3 +20,4 @@ export default function RootLayout({
     </html>
   );
 }
+

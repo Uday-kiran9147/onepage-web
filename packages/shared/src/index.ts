@@ -1,19 +1,23 @@
 export {
-  CategoryEnum,
   UserSchema,
-  FeedbackAnswerSchema,
-  FeedbackSubmitSchema,
-  PatternSchema,
-  FeedbackSchema,
   ProfileUpdateSchema,
+  LinkItemSchema,
+  ProjectItemSchema,
+  ExperienceItemSchema,
+  SectionTypeEnum,
+  SectionSchema,
+  LinksSectionDataSchema,
+  ProjectsSectionDataSchema,
+  ExperienceSectionDataSchema,
+  AboutSectionDataSchema,
 } from './schemas';
 
 export type {
-  Category,
   User,
-  FeedbackAnswer,
-  FeedbackSubmit,
-  Pattern,
-  Feedback,
   ProfileUpdate,
+  LinkItem,
+  ProjectItem,
+  ExperienceItem,
+  SectionType,
+  Section,
 } from './schemas';

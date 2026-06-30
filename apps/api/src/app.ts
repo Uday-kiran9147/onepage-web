@@ -5,8 +5,6 @@ import { errorHandler } from './middleware/errorHandler';
 import { requestLogger } from './middleware/logger';
 import authRoutes from './routes/auth.route';
 import profileRoutes from './routes/profile.route';
-import feedbackRoutes from './routes/feedback.route';
-import patternRoutes from './routes/pattern.route';
 
 const app: Express = express();
 
@@ -25,8 +23,6 @@ app.set('trust proxy', 1);
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/profile', profileRoutes);
-app.use('/api/feedback', feedbackRoutes);
-app.use('/api/patterns', patternRoutes);
 
 // Health check
 app.get('/api/health', (_req, res) => {

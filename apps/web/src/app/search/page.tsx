@@ -16,3 +16,4 @@ export default function SearchPage({
   // Fallback if empty search
   redirect('/');
 }
+

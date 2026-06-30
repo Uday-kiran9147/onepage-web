@@ -5,27 +5,36 @@
 @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
 
 :root {
-  --foreground: #1a1a1a;
-  --background: #f9f8f5;
+  --foreground: #2d2d2d;         /* Calm charcoal instead of harsh black */
+  --background: #f7f6f3;         /* Calm, soft off-white/beige background */
   --card-bg: #ffffff;
-  --border: #e8e5de;
-  --beige: #f4f3ef;
+  --border: #eae8e2;             /* Very soft, thin card border */
+  --beige: #f1efea;
   
-  --purple-bg: #EEEDFE;
-  --purple-text: #3C3489;
-  --purple-border: #AFA9EC;
+  /* Calm Lavender Accent */
+  --purple-bg: #F2F0FA;
+  --purple-text: #554C8C;
+  --purple-border: #D2CCE9;
 
-  --teal-bg: #E1F5EE;
-  --teal-text: #0F6E56;
-  --teal-border: #80C8B0;
+  /* Calm Sage Green Accent */
+  --teal-bg: #EEF3F0;
+  --teal-text: #557A68;
+  --teal-border: #D5E0DA;
 
-  --amber-bg: #FAEEDA;
-  --amber-text: #854F0B;
-  --amber-border: #ECD0A9;
+  /* Calm Cream/Sand Accent */
+  --amber-bg: #F7F2EC;
+  --amber-text: #9C7F59;
+  --amber-border: #E2D9CD;
 
-  --red-bg: #FAECE7;
-  --red-text: #B23D19;
-  --red-border: #E05A2B;
+  /* Calm Dusty Rose/Terracotta Accent */
+  --red-bg: #FAF0ED;
+  --red-text: #A66E58;
+  --red-border: #ECD5CC;
+}
+
+/* Force absolutely no rounded borders across the entire website */
+* {
+  border-radius: 0px !important;
 }
 
 body {
@@ -36,11 +45,11 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Custom styles for Mirror design */
+/* Custom styles for ReadOnePage design */
 .label-premium {
   font-size: 11px;
   font-weight: 700;
-  color: #999;
+  color: #a3a19c;
   text-transform: uppercase;
   letter-spacing: 0.12em;
   margin-bottom: 0.75rem;
@@ -49,22 +58,20 @@ body {
 .card-premium {
   background: var(--card-bg);
   border: 1px solid var(--border);
-  border-radius: 16px;
   padding: 1.5rem;
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.015);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.01);
 }
 
 .card-premium:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(83, 74, 183, 0.04);
+  box-shadow: 0 6px 20px rgba(107, 96, 168, 0.03);
   border-color: var(--purple-border);
 }
 
 .highlight-premium {
   background: var(--purple-bg);
   border: 1px solid var(--purple-border);
-  border-radius: 16px;
   padding: 1.5rem;
 }
 

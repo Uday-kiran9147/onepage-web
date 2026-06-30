@@ -1,64 +1,87 @@
-import { OAuth2Client } from 'google-auth-library';
+import { auth, db, Transaction } from '../lib/firebase';
 import jwt from 'jsonwebtoken';
-import { UserModel } from '../models/User';
 import { env } from '../lib/env';
 import { AppError } from '../types/AppError';
 
-const googleClient = new OAuth2Client();
-
 export class AuthService {
   /**
-   * Verify Google OAuth token, create/update user, return JWT.
+   * Verify Google OAuth token (issued by Firebase Auth client), create/update user, return JWT.
    */
   static async googleLogin(idToken: string) {
-    const ticket = await googleClient.verifyIdToken({
-      idToken,
-      // audience can be set if needed
-    });
+    try {
+      const decodedToken = await auth.verifyIdToken(idToken);
+      const { uid, email, name, picture } = decodedToken;
 
-    const payload = ticket.getPayload();
-    if (!payload || !payload.sub || !payload.email) {
-      throw new AppError(401, 'Invalid Google token');
-    }
-
-    const { sub: googleId, email, name, picture } = payload;
-
-    // Upsert user
-    let user = await UserModel.findOne({ googleId });
-    if (!user) {
-      // Generate username from email prefix
-      const baseUsername = email.split('@')[0].toLowerCase().replace(/[^a-z0-9_-]/g, '');
-      let username = baseUsername;
-      let counter = 1;
-      while (await UserModel.findOne({ username })) {
-        username = `${baseUsername}${counter}`;
-        counter++;
+      if (!email) {
+        throw new AppError(400, 'Email is required from Google Auth');
       }
 
-      user = await UserModel.create({
-        googleId,
-        email,
-        name: name || email.split('@')[0],
-        username,
-      });
+      // 1. Fetch user from Firestore
+      const userRef = db.collection('users').doc(uid);
+      const userDoc = await userRef.get();
+
+      let userData: any;
+
+      if (!userDoc.exists) {
+        // 2. Generate a unique username from email prefix
+        const baseUsername = email.split('@')[0].toLowerCase().replace(/[^a-z0-9_-]/g, '');
+        let username = baseUsername;
+        if (username.length < 3) {
+          username = username + '123';
+        }
+        
+        let counter = 1;
+        // Verify unique username
+        while (true) {
+          const usernameDoc = await db.collection('usernames').doc(username).get();
+          if (!usernameDoc.exists) {
+            break;
+          }
+          username = `${baseUsername}${counter}`;
+          counter++;
+        }
+
+        userData = {
+          id: uid,
+          email,
+          name: name || email.split('@')[0],
+          username,
+          bio: '',
+          avatarUrl: picture || '',
+          isOnboarded: false,
+          createdAt: new Date().toISOString(), // Keep it string/ISO for easy serialization
+        };
+
+        // Write to both users and usernames in a transaction to ensure uniqueness
+        await db.runTransaction(async (transaction: Transaction) => {
+          transaction.set(userRef, userData);
+          transaction.set(db.collection('usernames').doc(username), { uid });
+        });
+      } else {
+        userData = userDoc.data();
+      }
+
+      // Sign local JWT session token — payload: { userId: uid, username: userData.username }
+      const token = jwt.sign(
+        { userId: uid, username: userData.username },
+        env.JWT_SECRET,
+        { expiresIn: '7d' }
+      );
+
+      return { user: userData, token };
+    } catch (error: any) {
+      console.error('Google login error:', error);
+      if (error instanceof AppError) throw error;
+      throw new AppError(401, error.message || 'Invalid Google ID token');
     }
-
-    // Sign JWT — payload: { userId, username }, 7 days
-    const token = jwt.sign(
-      { userId: String(user._id), username: user.username },
-      env.JWT_SECRET,
-      { expiresIn: '7d' }
-    );
-
-    return { user, token };
   }
 
   /**
    * Get user by ID.
    */
   static async getMe(userId: string) {
-    const user = await UserModel.findById(userId).select('-__v');
-    if (!user) throw new AppError(404, 'User not found');
-    return user;
+    const userDoc = await db.collection('users').doc(userId).get();
+    if (!userDoc.exists) throw new AppError(404, 'User not found');
+    return userDoc.data();
   }
 }

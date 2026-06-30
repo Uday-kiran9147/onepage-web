@@ -1,199 +1,856 @@
-import type { Metadata } from 'next';
-import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
+'use client';
+
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { onAuthStateChanged } from 'firebase/auth';
+import { 
+  doc, 
+  getDoc, 
+  updateDoc, 
+  collection, 
+  getDocs, 
+  addDoc, 
+  deleteDoc, 
+  writeBatch,
+  query, 
+  orderBy 
+} from 'firebase/firestore';
 import Link from 'next/link';
+import { auth, db } from '../../lib/firebase';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
-
-export const metadata: Metadata = {
-  title: 'Dashboard — Mirror',
-  description: 'View your anonymous feedback and AI-generated patterns.',
-};
-
-interface FeedbackAnswer {
-  category: string;
-  prompt: string;
-  text: string;
+interface Section {
+  id: string;
+  type: 'links' | 'projects' | 'experience' | 'about';
+  title: string;
+  data: any;
+  order: number;
 }
 
-interface FeedbackItem {
-  _id: string;
-  answers: FeedbackAnswer[];
-  createdAt: string;
+interface UserProfile {
+  id: string;
+  name: string;
+  username: string;
+  bio: string;
+  avatarUrl: string;
+  email: string;
 }
 
-interface PatternItem {
-  _id: string;
-  category: string;
-  summary: string;
-  count: number;
-}
+export default function DashboardPage() {
+  const router = useRouter();
+  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState<UserProfile | null>(null);
+  const [sections, setSections] = useState<Section[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
 
-const CATEGORY_STYLES: Record<string, { bg: string; border: string; label: string; text: string }> = {
-  habit: { bg: '#FAECE7', border: '#E05A2B', label: '#993C1D', text: '#3D1B0E' },
-  attitude: { bg: '#EEEDFE', border: '#534AB7', label: '#3C3489', text: '#26215C' },
-  personality: { bg: '#E1F5EE', border: '#1D9E75', label: '#0F6E56', text: '#0A3D2B' },
-};
+  // Profile Edit fields
+  const [name, setName] = useState('');
+  const [bio, setBio] = useState('');
+  const [avatarUrl, setAvatarUrl] = useState('');
+  const [isEditingProfile, setIsEditingProfile] = useState(false);
+  const [savingProfile, setSavingProfile] = useState(false);
 
-async function fetchWithAuth(path: string) {
-  const cookieStore = cookies();
-  const token = cookieStore.get('token')?.value;
+  // Section Create Form fields
+  const [isAddingSection, setIsAddingSection] = useState(false);
+  const [newSecType, setNewSecType] = useState<'links' | 'projects' | 'experience' | 'about'>('links');
+  const [newSecTitle, setNewSecTitle] = useState('');
 
-  if (!token) return null;
+  // Active section editing
+  const [editingSectionId, setEditingSectionId] = useState<string | null>(null);
+  const [editSecTitle, setEditSecTitle] = useState('');
+  const [editSecData, setEditSecData] = useState<any>(null);
 
-  const res = await fetch(`${API_URL}${path}`, {
-    cache: 'no-store',
-    headers: {
-      Cookie: `token=${token}`,
-    },
-  });
+  // Load Auth state and Firestore data
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (fbUser) => {
+      if (!fbUser) {
+        router.push('/login');
+        return;
+      }
 
-  if (!res.ok) return null;
-  return res.json();
-}
+      try {
+        // 1. Fetch profile from Firestore
+        const userRef = doc(db, 'users', fbUser.uid);
+        const userDoc = await getDoc(userRef);
+        
+        if (!userDoc.exists()) {
+          router.push('/onboarding');
+          return;
+        }
 
-export default async function DashboardPage() {
-  const cookieStore = cookies();
-  const token = cookieStore.get('token')?.value;
-  if (!token) redirect('/login');
+        const userData = userDoc.data() as UserProfile;
+        setUser(userData);
+        setName(userData.name);
+        setBio(userData.bio || '');
+        setAvatarUrl(userData.avatarUrl || '');
 
-  const [meData, feedbackData, patternData] = await Promise.all([
-    fetchWithAuth('/api/auth/me'),
-    fetchWithAuth('/api/feedback'),
-    fetchWithAuth('/api/patterns'),
-  ]);
+        // 2. Fetch sections from Firestore subcollection
+        const sectionsRef = collection(db, 'users', fbUser.uid, 'sections');
+        const q = query(sectionsRef, orderBy('order', 'asc'));
+        const querySnapshot = await getDocs(q);
+        
+        const secList: Section[] = [];
+        querySnapshot.forEach((docSnap) => {
+          secList.push({
+            id: docSnap.id,
+            ...docSnap.data(),
+          } as Section);
+        });
+        setSections(secList);
+      } catch (err: any) {
+        console.error('Failed to load dashboard data:', err);
+        setError(err.message || 'Failed to load profile.');
+      } finally {
+        setLoading(false);
+      }
+    });
 
-  if (!meData) redirect('/login');
+    return () => unsubscribe();
+  }, [router]);
 
-  const user = meData.user;
-  const feedback: FeedbackItem[] = feedbackData?.feedback || [];
-  const patterns: PatternItem[] = patternData?.patterns || [];
+  const showSuccess = (msg: string) => {
+    setSuccess(msg);
+    setTimeout(() => setSuccess(null), 3000);
+  };
+
+  // --- Profile Actions ---
+  const handleUpdateProfile = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!user) return;
+    setSavingProfile(true);
+    setError(null);
+    try {
+      const userRef = doc(db, 'users', user.id);
+      await updateDoc(userRef, { name, bio, avatarUrl });
+      
+      setUser({
+        ...user,
+        name,
+        bio,
+        avatarUrl,
+      });
+      setIsEditingProfile(false);
+      showSuccess('Profile updated successfully!');
+    } catch (err: any) {
+      console.error(err);
+      setError(err.message || 'Failed to update profile.');
+    } finally {
+      setSavingProfile(false);
+    }
+  };
+
+  // --- Section Actions ---
+  const handleAddSection = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!user || !newSecTitle) return;
+    setError(null);
+
+    // Default template data based on type
+    let defaultData: any = {};
+    if (newSecType === 'links') defaultData = { links: [] };
+    else if (newSecType === 'projects') defaultData = { projects: [] };
+    else if (newSecType === 'experience') defaultData = { items: [] };
+    else if (newSecType === 'about') defaultData = { content: '' };
+
+    // Calculate next order
+    let nextOrder = 0;
+    if (sections.length > 0) {
+      nextOrder = Math.max(...sections.map(s => s.order)) + 1;
+    }
+
+    try {
+      const sectionsRef = collection(db, 'users', user.id, 'sections');
+      const newSecPayload = {
+        type: newSecType,
+        title: newSecTitle,
+        data: defaultData,
+        order: nextOrder,
+        createdAt: new Date().toISOString(),
+      };
+
+      const docRef = await addDoc(sectionsRef, newSecPayload);
+
+      setSections([...sections, {
+        id: docRef.id,
+        ...newSecPayload
+      }]);
+      setIsAddingSection(false);
+      setNewSecTitle('');
+      showSuccess('Section added successfully!');
+    } catch (err: any) {
+      console.error(err);
+      setError(err.message || 'Failed to add section');
+    }
+  };
+
+  const handleStartEditSection = (section: Section) => {
+    setEditingSectionId(section.id);
+    setEditSecTitle(section.title);
+    setEditSecData(JSON.parse(JSON.stringify(section.data)));
+  };
+
+  const handleSaveSection = async (sectionId: string) => {
+    if (!user) return;
+    setError(null);
+    try {
+      const sectionRef = doc(db, 'users', user.id, 'sections', sectionId);
+      await updateDoc(sectionRef, {
+        title: editSecTitle,
+        data: editSecData,
+      });
+
+      setSections(sections.map((s) => (s.id === sectionId ? { ...s, title: editSecTitle, data: editSecData } : s)));
+      setEditingSectionId(null);
+      showSuccess('Section updated!');
+    } catch (err: any) {
+      console.error(err);
+      setError(err.message || 'Failed to update section');
+    }
+  };
+
+  const handleDeleteSection = async (sectionId: string) => {
+    if (!user || !confirm('Are you sure you want to delete this section?')) return;
+    setError(null);
+    try {
+      const sectionRef = doc(db, 'users', user.id, 'sections', sectionId);
+      await deleteDoc(sectionRef);
+
+      setSections(sections.filter((s) => s.id !== sectionId));
+      showSuccess('Section deleted.');
+    } catch (err: any) {
+      console.error(err);
+      setError(err.message || 'Failed to delete section');
+    }
+  };
+
+  const handleReorder = async (currentIndex: number, direction: 'up' | 'down') => {
+    if (!user) return;
+    const targetIndex = direction === 'up' ? currentIndex - 1 : currentIndex + 1;
+    if (targetIndex < 0 || targetIndex >= sections.length) return;
+
+    const newSections = [...sections];
+    const temp = newSections[currentIndex];
+    newSections[currentIndex] = newSections[targetIndex];
+    newSections[targetIndex] = temp;
+
+    // Instantly show visual update
+    setSections(newSections);
+
+    // Save to Firestore in a batch write
+    try {
+      const batch = writeBatch(db);
+      newSections.forEach((sec, idx) => {
+        const secRef = doc(db, 'users', user.id, 'sections', sec.id);
+        batch.update(secRef, { order: idx });
+      });
+      await batch.commit();
+    } catch (err) {
+      console.error('Failed to save order:', err);
+    }
+  };
+
+  // --- Sub-item mutations inside editing state ---
+  const addLinkItem = () => {
+    const links = editSecData.links || [];
+    setEditSecData({
+      ...editSecData,
+      links: [...links, { label: '', url: '', icon: 'link' }],
+    });
+  };
+
+  const updateLinkItem = (index: number, field: string, val: string) => {
+    const links = [...editSecData.links];
+    links[index] = { ...links[index], [field]: val };
+    setEditSecData({ ...editSecData, links });
+  };
+
+  const deleteLinkItem = (index: number) => {
+    const links = editSecData.links.filter((_: any, i: number) => i !== index);
+    setEditSecData({ ...editSecData, links });
+  };
+
+  const addProjectItem = () => {
+    const projects = editSecData.projects || [];
+    setEditSecData({
+      ...editSecData,
+      projects: [...projects, { name: '', description: '', url: '', tags: [], status: 'shipped' }],
+    });
+  };
+
+  const updateProjectItem = (index: number, field: string, val: any) => {
+    const projects = [...editSecData.projects];
+    projects[index] = { ...projects[index], [field]: val };
+    setEditSecData({ ...editSecData, projects });
+  };
+
+  const deleteProjectItem = (index: number) => {
+    const projects = editSecData.projects.filter((_: any, i: number) => i !== index);
+    setEditSecData({ ...editSecData, projects });
+  };
+
+  const addExperienceItem = () => {
+    const items = editSecData.items || [];
+    setEditSecData({
+      ...editSecData,
+      items: [...items, { role: '', company: '', duration: '', description: '' }],
+    });
+  };
+
+  const updateExperienceItem = (index: number, field: string, val: string) => {
+    const items = [...editSecData.items];
+    items[index] = { ...items[index], [field]: val };
+    setEditSecData({ ...editSecData, items });
+  };
+
+  const deleteExperienceItem = (index: number) => {
+    const items = editSecData.items.filter((_: any, i: number) => i !== index);
+    setEditSecData({ ...editSecData, items });
+  };
+
+  const handleLogout = async () => {
+    await auth.signOut();
+    router.push('/login');
+  };
+
+  if (loading) {
+    return (
+      <main className="min-h-screen flex items-center justify-center bg-[#f7f6f3]">
+        <div className="animate-spin h-12 w-12 border-t-2 border-b-2 border-[#6B60A8]"></div>
+      </main>
+    );
+  }
+
+  if (!user) return null;
 
   return (
-    <main className="min-h-screen px-4 py-12">
+    <main className="min-h-screen px-4 py-12 bg-[#f7f6f3]">
       <div className="max-w-2xl mx-auto">
+        
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center gap-2">
-            <span className="text-xl">🪞</span>
-            <span className="font-bold text-lg text-gray-900 tracking-tight">Mirror</span>
+        <div className="flex items-center justify-between mb-8 border-b border-[#e8e5de] pb-6">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-gradient-to-tr from-[#6B60A8] to-[#D5E0DA] flex items-center justify-center text-white font-bold text-lg shadow-sm">
+              R
+            </div>
+            <div>
+              <span className="font-bold text-lg text-gray-900 tracking-tight block">ReadOnePage</span>
+              <span className="text-[10px] text-gray-400">Dashboard</span>
+            </div>
           </div>
           <div className="flex gap-2">
             <Link
-              href="/settings"
-              className="px-4 py-2 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 border border-[#e8e5de] text-sm font-medium transition"
-            >
-              ⚙️ Settings
-            </Link>
-            <Link
               href={`/${user.username}`}
-              className="px-4 py-2 rounded-xl bg-[#534AB7] hover:bg-[#3C3489] text-white text-sm font-medium transition shadow-sm"
+              target="_blank"
+              className="px-4 py-2 bg-[#6B60A8] hover:bg-[#554C8C] text-white text-xs font-bold transition shadow-sm"
             >
-              Public Profile →
+              Public Profile ↗
             </Link>
+            <button
+              onClick={handleLogout}
+              className="px-4 py-2 border border-[#e8e5de] bg-white text-gray-700 text-xs font-bold hover:bg-gray-50 transition shadow-sm"
+            >
+              Logout
+            </button>
           </div>
         </div>
 
-        <div className="label-premium">your private dashboard</div>
-        <div className="card-premium mb-8">
-          {/* Metrics row */}
-          <div className="grid grid-cols-3 gap-3 mb-6">
-            <div className="bg-[#f4f3ef] rounded-xl p-4 text-center">
-              <div className="text-2xl font-bold text-gray-900">{feedback.length}</div>
-              <div className="text-[11px] text-gray-500 mt-0.5">feedbacks</div>
-            </div>
-            <div className="bg-[#f4f3ef] rounded-xl p-4 text-center">
-              <div className="text-2xl font-bold text-gray-900">—</div>
-              <div className="text-[11px] text-gray-500 mt-0.5">unique givers</div>
-            </div>
-            <div className="bg-[#f4f3ef] rounded-xl p-4 text-center">
-              <div className="text-2xl font-bold text-gray-900">{patterns.length}</div>
-              <div className="text-[11px] text-gray-500 mt-0.5">patterns found</div>
-            </div>
+        {/* Global Messages */}
+        {error && (
+          <div className="mb-6 px-4 py-3 bg-[#FAF0ED] border border-[#ECD5CC]/30 text-[#A66E58] text-xs font-semibold">
+            ⚠️ {error}
           </div>
+        )}
+        {success && (
+          <div className="mb-6 px-4 py-3 bg-[#EEF3F0] border border-[#D5E0DA]/50 text-[#557A68] text-xs font-bold">
+            ✓ {success}
+          </div>
+        )}
 
-          {/* Pattern Insights */}
-          {patterns.length > 0 ? (
-            <div className="space-y-2">
-              {patterns.map((pattern) => {
-                const style = CATEGORY_STYLES[pattern.category] || CATEGORY_STYLES.habit;
-                return (
-                  <div
-                    key={pattern._id}
-                    className="rounded-xl px-4 py-3"
-                    style={{
-                      backgroundColor: style.bg,
-                      borderLeft: `3px solid ${style.border}`,
-                    }}
-                  >
-                    <div
-                      className="text-[11px] font-bold uppercase tracking-wider mb-0.5"
-                      style={{ color: style.label }}
-                    >
-                      {pattern.category} · {pattern.count} people noticed this
-                    </div>
-                    <p className="text-sm leading-relaxed" style={{ color: style.text }}>
-                      &ldquo;{pattern.summary}&rdquo;
-                    </p>
-                  </div>
-                );
-              })}
+        {/* ─── Profile Header Editor ────────────────────────────────── */}
+        <div className="label-premium">Profile Header</div>
+        <div className="card-premium mb-8 bg-white">
+          {!isEditingProfile ? (
+            <div className="flex items-start justify-between gap-4">
+              <div className="flex items-center gap-4">
+                <div className="w-14 h-14 bg-gray-100 border border-[#e8e5de] flex items-center justify-center overflow-hidden shadow-inner">
+                  {user.avatarUrl ? (
+                    <img src={user.avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
+                  ) : (
+                    <span className="text-xl">👤</span>
+                  )}
+                </div>
+                <div>
+                  <h3 className="font-bold text-base text-gray-900">{user.name}</h3>
+                  <p className="text-xs text-[#6B60A8] font-semibold">@{user.username}</p>
+                  {user.bio ? (
+                    <p className="text-xs text-gray-500 mt-1 max-w-md">{user.bio}</p>
+                  ) : (
+                    <p className="text-xs text-gray-400 mt-1 italic">No bio defined yet.</p>
+                  )}
+                </div>
+              </div>
+              <button
+                onClick={() => setIsEditingProfile(true)}
+                className="text-xs font-bold text-[#6B60A8] hover:underline"
+              >
+                Edit
+              </button>
             </div>
           ) : (
-            <p className="text-xs text-gray-500">
-              AI clusters similar feedback into <strong className="text-gray-900">patterns</strong> — you see themes, not noise. Patterns appear after 5+ feedbacks.
-            </p>
+            <form onSubmit={handleUpdateProfile} className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Display Name</label>
+                  <input
+                    type="text"
+                    required
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="w-full px-3 py-2 text-xs bg-[#f4f3ef] border border-[#e8e5de] text-gray-900 font-semibold focus:outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Avatar Image URL</label>
+                  <input
+                    type="text"
+                    value={avatarUrl}
+                    onChange={(e) => setAvatarUrl(e.target.value)}
+                    className="w-full px-3 py-2 text-xs bg-[#f4f3ef] border border-[#e8e5de] text-gray-900 focus:outline-none"
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Bio</label>
+                <textarea
+                  rows={2}
+                  value={bio}
+                  onChange={(e) => setBio(e.target.value)}
+                  className="w-full px-3 py-2 text-xs bg-[#f4f3ef] border border-[#e8e5de] text-gray-900 focus:outline-none resize-none font-serif-premium italic"
+                  placeholder="Tell visitors about yourself in short sentences..."
+                />
+              </div>
+              <div className="flex justify-end gap-2 text-xs font-bold">
+                <button
+                  type="button"
+                  onClick={() => setIsEditingProfile(false)}
+                  className="px-4 py-2 bg-gray-100 text-gray-600 hover:bg-gray-200"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={savingProfile}
+                  className="px-4 py-2 bg-[#6B60A8] text-white hover:bg-[#554C8C]"
+                >
+                  {savingProfile ? 'Saving...' : 'Save Profile'}
+                </button>
+              </div>
+            </form>
           )}
         </div>
 
-        {/* Share Link */}
-        <div className="label-premium">share your feedback link</div>
-        <div className="highlight-premium mb-8 flex items-center justify-between">
-          <code className="text-sm font-semibold text-[#534AB7]">
-            readonepage.xyz/@{user.username}
-          </code>
-          <span className="text-xs text-[#534AB7]/60">Copy & share →</span>
+        {/* ─── Sections System ──────────────────────────────────────── */}
+        <div className="flex justify-between items-baseline mb-3">
+          <div className="label-premium m-0">Your Sections</div>
+          {!isAddingSection && (
+            <button
+              onClick={() => setIsAddingSection(true)}
+              className="text-xs font-extrabold text-[#6B60A8] hover:underline"
+            >
+              + Add Section
+            </button>
+          )}
         </div>
 
-        {/* Recent Feedback */}
-        <div className="label-premium">recent feedback</div>
-        {feedback.length === 0 ? (
-          <div className="card-premium text-center py-8">
-            <p className="text-sm text-gray-500 mb-2">No feedback yet.</p>
-            <p className="text-xs text-gray-400">Share your link to get started!</p>
-          </div>
-        ) : (
-          <div className="space-y-3">
-            {feedback.map((item) => (
-              <div key={item._id} className="card-premium">
-                <p className="text-[11px] text-gray-400 mb-3 font-medium">
-                  {new Date(item.createdAt).toLocaleDateString('en-US', {
-                    month: 'short',
-                    day: 'numeric',
-                    year: 'numeric',
-                  })}
-                </p>
-                <div className="space-y-3">
-                  {item.answers.map((answer, i) => {
-                    const style = CATEGORY_STYLES[answer.category] || CATEGORY_STYLES.habit;
-                    return (
-                      <div key={i}>
-                        <span
-                          className="text-[10px] font-bold uppercase tracking-wider"
-                          style={{ color: style.label }}
-                        >
-                          {answer.category}
-                        </span>
-                        <p className="text-sm text-gray-700 mt-0.5 leading-relaxed">{answer.text}</p>
-                      </div>
-                    );
-                  })}
+        {/* Create Section Form */}
+        {isAddingSection && (
+          <div className="card-premium mb-6 bg-[#F2F0FA] border-[#D2CCE9] p-6">
+            <h4 className="font-bold text-sm text-[#423B6D] mb-4">Add a new Profile Section</h4>
+            <form onSubmit={handleAddSection} className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-[10px] font-bold text-[#6B60A8] uppercase tracking-wider mb-1.5">Section Type</label>
+                  <select
+                    value={newSecType}
+                    onChange={(e) => setNewSecType(e.target.value as any)}
+                    className="w-full px-3.5 py-2.5 text-xs bg-white border border-[#e8e5de] focus:outline-none"
+                  >
+                    <option value="links">🔗 Social Links</option>
+                    <option value="projects">💻 Projects</option>
+                    <option value="experience">💼 Work Experience</option>
+                    <option value="about">📝 Rich Text / About</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-[10px] font-bold text-[#6B60A8] uppercase tracking-wider mb-1.5">Section Title</label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="e.g. My Portfolio, Shipped Products"
+                    value={newSecTitle}
+                    onChange={(e) => setNewSecTitle(e.target.value)}
+                    className="w-full px-3.5 py-2.5 text-xs bg-white border border-[#e8e5de] focus:outline-none font-semibold text-gray-900"
+                  />
                 </div>
               </div>
-            ))}
+              <div className="flex justify-end gap-2 text-xs font-bold">
+                <button
+                  type="button"
+                  onClick={() => setIsAddingSection(false)}
+                  className="px-4 py-2 bg-white border border-[#e8e5de] text-gray-600 hover:bg-gray-50"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-[#6B60A8] text-white hover:bg-[#554C8C]"
+                >
+                  Create Section
+                </button>
+              </div>
+            </form>
           </div>
         )}
+
+        {/* Section List (Ordered) */}
+        {sections.length === 0 ? (
+          <div className="card-premium text-center py-12 bg-white">
+            <span className="text-3xl">🏠</span>
+            <p className="text-sm font-bold text-gray-600 mt-3 mb-1">Your home has no sections yet.</p>
+            <p className="text-xs text-gray-400 mb-4">Add sections to list links, experience, or products.</p>
+            <button
+              onClick={() => setIsAddingSection(true)}
+              className="px-4 py-2 bg-[#6B60A8] hover:bg-[#554C8C] text-white text-xs font-bold transition"
+            >
+              Add your first section
+            </button>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {sections.map((section, idx) => {
+              const isEditing = editingSectionId === section.id;
+              
+              return (
+                <div key={section.id} className="card-premium bg-white">
+                  <div className="flex items-center justify-between gap-4 mb-2">
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm">
+                        {section.type === 'links' && '🔗'}
+                        {section.type === 'projects' && '💻'}
+                        {section.type === 'experience' && '💼'}
+                        {section.type === 'about' && '📝'}
+                      </span>
+                      {isEditing ? (
+                        <input
+                          type="text"
+                          required
+                          value={editSecTitle}
+                          onChange={(e) => setEditSecTitle(e.target.value)}
+                          className="px-2 py-0.5 border border-[#e8e5de] rounded-none font-bold text-sm text-gray-900 focus:outline-none"
+                        />
+                      ) : (
+                        <span className="font-bold text-sm text-gray-900">{section.title}</span>
+                      )}
+                      <span className="text-[9px] uppercase tracking-widest px-2 py-0.5 bg-gray-100 text-gray-400 font-bold">
+                        {section.type}
+                      </span>
+                    </div>
+                    
+                    {/* Controls */}
+                    <div className="flex items-center gap-3">
+                      {/* Order selectors */}
+                      <div className="flex items-center gap-1">
+                        <button
+                          onClick={() => handleReorder(idx, 'up')}
+                          disabled={idx === 0}
+                          className="w-6 h-6 bg-gray-50 hover:bg-gray-100 flex items-center justify-center text-xs text-gray-400 disabled:opacity-30 disabled:cursor-not-allowed"
+                        >
+                          ▲
+                        </button>
+                        <button
+                          onClick={() => handleReorder(idx, 'down')}
+                          disabled={idx === sections.length - 1}
+                          className="w-6 h-6 bg-gray-50 hover:bg-gray-100 flex items-center justify-center text-xs text-gray-400 disabled:opacity-30 disabled:cursor-not-allowed"
+                        >
+                          ▼
+                        </button>
+                      </div>
+                      
+                      {!isEditing ? (
+                        <div className="flex items-center gap-2 text-xs font-bold">
+                          <button
+                            onClick={() => handleStartEditSection(section)}
+                            className="text-[#6B60A8] hover:underline"
+                          >
+                            Edit
+                          </button>
+                          <span className="text-gray-200">|</span>
+                          <button
+                            onClick={() => handleDeleteSection(section.id)}
+                            className="text-[#A66E58] hover:underline"
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="flex items-center gap-2 text-xs font-bold">
+                          <button
+                            onClick={() => handleSaveSection(section.id)}
+                            className="text-[#557A68] hover:underline"
+                          >
+                            Save
+                          </button>
+                          <span className="text-gray-200">|</span>
+                          <button
+                            onClick={() => setEditingSectionId(null)}
+                            className="text-gray-400 hover:underline"
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Section Contents */}
+                  <div className="border-t border-[#e8e5de]/55 pt-3 mt-3">
+                    
+                    {/* View mode */}
+                    {!isEditing && (
+                      <div className="text-xs text-gray-500 space-y-1">
+                        {section.type === 'links' && (
+                          <div className="flex flex-wrap gap-2">
+                            {section.data.links?.length > 0 ? (
+                              section.data.links.map((link: any, i: number) => (
+                                <span key={i} className="px-2.5 py-1 bg-[#f4f3ef] border border-[#e8e5de] font-semibold text-gray-700">
+                                  {link.label || 'Link'}
+                                </span>
+                              ))
+                            ) : (
+                              <p className="italic text-gray-400">No links added yet.</p>
+                            )}
+                          </div>
+                        )}
+                        {section.type === 'projects' && (
+                          <div className="space-y-1.5">
+                            {section.data.projects?.length > 0 ? (
+                              section.data.projects.map((proj: any, i: number) => (
+                                <div key={i} className="flex justify-between items-baseline bg-[#f4f3ef]/50 p-2 border border-[#e8e5de]/30">
+                                  <span className="font-bold text-gray-800">{proj.name}</span>
+                                  <span className="text-[10px] text-gray-400">{proj.status}</span>
+                                </div>
+                              ))
+                            ) : (
+                              <p className="italic text-gray-400">No projects added yet.</p>
+                            )}
+                          </div>
+                        )}
+                        {section.type === 'experience' && (
+                          <div className="space-y-1.5">
+                            {section.data.items?.length > 0 ? (
+                              section.data.items.map((item: any, i: number) => (
+                                <div key={i} className="flex justify-between items-baseline bg-[#f4f3ef]/50 p-2 border border-[#e8e5de]/30">
+                                  <span className="font-bold text-gray-800">{item.role} @ {item.company}</span>
+                                  <span className="text-[10px] text-gray-400">{item.duration}</span>
+                                </div>
+                              ))
+                            ) : (
+                              <p className="italic text-gray-400">No items added yet.</p>
+                            )}
+                          </div>
+                        )}
+                        {section.type === 'about' && (
+                          <p className="whitespace-pre-wrap leading-relaxed">{section.data.content || <span className="italic text-gray-400">No text defined.</span>}</p>
+                        )}
+                      </div>
+                    )}
+
+                    {/* Edit mode fields */}
+                    {isEditing && (
+                      <div className="space-y-4">
+                        
+                        {/* Links section edit */}
+                        {section.type === 'links' && (
+                          <div className="space-y-3">
+                            {editSecData.links?.map((link: any, linkIdx: number) => (
+                              <div key={linkIdx} className="flex items-center gap-2 bg-[#f4f3ef] p-3 border border-[#e8e5de]/60">
+                                <input
+                                  type="text"
+                                  placeholder="Label (e.g. Portfolio)"
+                                  value={link.label}
+                                  onChange={(e) => updateLinkItem(linkIdx, 'label', e.target.value)}
+                                  className="w-1/3 px-2 py-1 text-xs border border-[#e8e5de] focus:outline-none"
+                                />
+                                <input
+                                  type="text"
+                                  placeholder="URL (https://...)"
+                                  value={link.url}
+                                  onChange={(e) => updateLinkItem(linkIdx, 'url', e.target.value)}
+                                  className="flex-1 px-2 py-1 text-xs border border-[#e8e5de] focus:outline-none"
+                                />
+                                <button
+                                  type="button"
+                                  onClick={() => deleteLinkItem(linkIdx)}
+                                  className="text-xs font-bold text-[#A66E58] hover:underline px-1"
+                                >
+                                  ✕
+                                </button>
+                              </div>
+                            ))}
+                            <button
+                              type="button"
+                              onClick={addLinkItem}
+                              className="text-xs font-extrabold text-[#6B60A8] hover:underline"
+                            >
+                              + Add Link Item
+                            </button>
+                          </div>
+                        )}
+
+                        {/* Projects section edit */}
+                        {section.type === 'projects' && (
+                          <div className="space-y-4">
+                            {editSecData.projects?.map((proj: any, projIdx: number) => (
+                              <div key={projIdx} className="bg-[#f4f3ef] p-4 border border-[#e8e5de]/60 space-y-2 relative">
+                                <button
+                                  type="button"
+                                  onClick={() => deleteProjectItem(projIdx)}
+                                  className="absolute top-3 right-3 text-xs font-bold text-[#A66E58] hover:underline"
+                                >
+                                  ✕ Remove
+                                </button>
+                                <div className="grid grid-cols-2 gap-2">
+                                  <input
+                                    type="text"
+                                    placeholder="Project Name"
+                                    value={proj.name}
+                                    onChange={(e) => updateProjectItem(projIdx, 'name', e.target.value)}
+                                    className="px-2 py-1 text-xs border border-[#e8e5de] focus:outline-none"
+                                  />
+                                  <input
+                                    type="text"
+                                    placeholder="Link URL"
+                                    value={proj.url}
+                                    onChange={(e) => updateProjectItem(projIdx, 'url', e.target.value)}
+                                    className="px-2 py-1 text-xs border border-[#e8e5de] focus:outline-none"
+                                  />
+                                </div>
+                                <input
+                                  type="text"
+                                  placeholder="Short Description"
+                                  value={proj.description}
+                                  onChange={(e) => updateProjectItem(projIdx, 'description', e.target.value)}
+                                  className="w-full px-2 py-1 text-xs border border-[#e8e5de] focus:outline-none"
+                                />
+                                <div className="grid grid-cols-2 gap-2">
+                                  <input
+                                    type="text"
+                                    placeholder="Tags (comma-separated, e.g. React, Next.js)"
+                                    value={proj.tags?.join(', ') || ''}
+                                    onChange={(e) => updateProjectItem(projIdx, 'tags', e.target.value.split(',').map((t: string) => t.trim()))}
+                                    className="px-2 py-1 text-xs border border-[#e8e5de] focus:outline-none"
+                                  />
+                                  <select
+                                    value={proj.status}
+                                    onChange={(e) => updateProjectItem(projIdx, 'status', e.target.value)}
+                                    className="px-2 py-1 text-xs border border-[#e8e5de] focus:outline-none bg-white"
+                                  >
+                                    <option value="in-progress">🏗️ In Progress</option>
+                                    <option value="shipped">🚀 Shipped</option>
+                                    <option value="archived">📦 Archived</option>
+                                  </select>
+                                </div>
+                              </div>
+                            ))}
+                            <button
+                              type="button"
+                              onClick={addProjectItem}
+                              className="text-xs font-extrabold text-[#6B60A8] hover:underline"
+                            >
+                              + Add Project Item
+                            </button>
+                          </div>
+                        )}
+
+                        {/* Experience section edit */}
+                        {section.type === 'experience' && (
+                          <div className="space-y-4">
+                            {editSecData.items?.map((item: any, itemIdx: number) => (
+                              <div key={itemIdx} className="bg-[#f4f3ef] p-4 border border-[#e8e5de]/60 space-y-2 relative">
+                                <button
+                                  type="button"
+                                  onClick={() => deleteExperienceItem(itemIdx)}
+                                  className="absolute top-3 right-3 text-xs font-bold text-[#A66E58] hover:underline"
+                                >
+                                  ✕ Remove
+                                </button>
+                                <div className="grid grid-cols-3 gap-2">
+                                  <input
+                                    type="text"
+                                    placeholder="Role (e.g. Designer)"
+                                    value={item.role}
+                                    onChange={(e) => updateExperienceItem(itemIdx, 'role', e.target.value)}
+                                    className="col-span-1 px-2 py-1 text-xs border border-[#e8e5de] focus:outline-none"
+                                  />
+                                  <input
+                                    type="text"
+                                    placeholder="Company / School"
+                                    value={item.company}
+                                    onChange={(e) => updateExperienceItem(itemIdx, 'company', e.target.value)}
+                                    className="col-span-1 px-2 py-1 text-xs border border-[#e8e5de] focus:outline-none"
+                                  />
+                                  <input
+                                    type="text"
+                                    placeholder="Duration (e.g. 2021 - 2023)"
+                                    value={item.duration}
+                                    onChange={(e) => updateExperienceItem(itemIdx, 'duration', e.target.value)}
+                                    className="col-span-1 px-2 py-1 text-xs border border-[#e8e5de] focus:outline-none"
+                                  />
+                                </div>
+                                <textarea
+                                  rows={2}
+                                  placeholder="Job / course descriptions..."
+                                  value={item.description}
+                                  onChange={(e) => updateExperienceItem(itemIdx, 'description', e.target.value)}
+                                  className="w-full px-2 py-1 text-xs border border-[#e8e5de] focus:outline-none resize-none"
+                                />
+                              </div>
+                            ))}
+                            <button
+                              type="button"
+                              onClick={addExperienceItem}
+                              className="text-xs font-extrabold text-[#6B60A8] hover:underline"
+                            >
+                              + Add Experience Item
+                            </button>
+                          </div>
+                        )}
+
+                        {/* About section edit */}
+                        {section.type === 'about' && (
+                          <div>
+                            <textarea
+                              rows={5}
+                              value={editSecData.content || ''}
+                              onChange={(e) => setEditSecData({ ...editSecData, content: e.target.value })}
+                              placeholder="Write anything you want in standard paragraphs..."
+                              className="w-full px-3 py-2 text-xs bg-[#f4f3ef] border border-[#e8e5de] text-gray-900 focus:outline-none"
+                            />
+                          </div>
+                        )}
+
+                      </div>
+                    )}
+
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+
       </div>
     </main>
   );
 }
+
